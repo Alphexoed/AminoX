@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ActionIdFinderLayout"
+    android:layout_width="320dp"
+    android:layout_height="300dp"
+    android:layout_gravity="center"
+    android:background="@color/backgroundDarker"
+    android:padding="6dp"
+    tools:context=".ActionSelectorActivity">
+
+    <Button
+        android:id="@+id/buttonIdFinderSearch"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/buttongradient"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/search"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/buttonIdFinderClose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/urlIdFinder"
+        app:layout_constraintVertical_bias="0.95" />
+
+    <Button
+        android:id="@+id/buttonIdFinderClose"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/buttongradient"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/close"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/urlIdFinder"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:autofillHints=""
+        android:background="@drawable/inputbox"
+        android:ems="10"
+        android:hint="@string/target_url"
+        android:importantForAutofill="no"
+        android:inputType="textUri|textShortMessage|textLongMessage|text"
+        android:textColor="@color/white"
+        android:textColorHint="@color/greyVeryLight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/urlIdFinder">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/layoutNickname"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="@string/nickname"
+                android:textAlignment="center"
+                android:textColor="@color/accent"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/infoIdNickname"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="@string/unknown"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutCommunity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNickname">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/layoutCommunity"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="@string/community"
+                android:textAlignment="center"
+                android:textColor="@color/accent"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/infoIdCommunity"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="@string/unknown"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearObjectId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCommunity">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/layoutObjectId"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="@string/object_id"
+                android:textAlignment="center"
+                android:textColor="@color/accent"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/infoIdObjectId"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="@string/unknown"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

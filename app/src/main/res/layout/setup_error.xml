@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/SetupErrorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/backgroundDarker"
+    android:padding="6dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/setupErrorTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="Something went wrong!"
+        android:textColor="@color/error"
+        android:textSize="24sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/setupErrorTitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="What is this?"
+        android:textColor="@color/accent"
+        android:textSize="18sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle"
+        app:layout_constraintVertical_bias="0.025"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/setupErrorTitle1Desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="This means that the AminoX isn't genuine and it was downloaded from an unofficial source or it was modified without permission. AminoX by default is completely free, if you payed for this app try to get a refund from the seller because you just got scammed.\n\nThis could also happen because AminoX detected that your device information isn't correct, try changing it back to default values."
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle1"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/setupErrorTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="What can I do to fix this?"
+        android:textColor="@color/accent"
+        android:textSize="18sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle1Desc"
+        app:layout_constraintVertical_bias="0.05"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/setupErrorTitle2Desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Uninstall AminoX and download the official version available at my discord server, link will be below. You can get support for the application too there."
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle2"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/setupErrorTitle3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="You're not whitelisted"
+        android:textColor="@color/accent"
+        android:textSize="18sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle2Desc"
+        app:layout_constraintVertical_bias="0.05"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/setupErrorTitle3Desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="You need to be whitelisted to use the app, join the discord server and ask Slimakoi for permission to use the app."
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle3"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/setupErrorDebugButton"
+        android:layout_width="200dp"
+        android:layout_height="28dp"
+        android:background="@drawable/buttongradient2"
+        android:clickable="true"
+        android:contentDescription="Copy the error to your clipboard, this is useful so I can debug the application if there was an issue."
+        android:focusable="true"
+        android:text="@string/copy_error"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/setupErrorButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle2Desc"
+        app:layout_constraintVertical_bias="0.975"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/setupErrorButton"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/buttongradient"
+        android:clickable="true"
+        android:contentDescription="Click here to join the official discord server to get the original AminoX"
+        android:focusable="true"
+        android:text="@string/discord_server"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupErrorTitle2Desc"
+        app:layout_constraintVertical_bias="1"
+        tools:ignore="HardcodedText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

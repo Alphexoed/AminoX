@@ -1,0 +1,23 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/backgroundDark</item>
+        <item name="colorPrimaryDark">@color/background</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <item name= "android:textViewStyle" > @style/RobotoTextViewStyle </item>
+        <item name= "android:buttonStyle" > @style/RobotoButtonStyle </item>
+    </style>
+
+    <style name="AminoX.Title" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name= "RobotoTextViewStyle" parent= "android:Widget.TextView" >
+        <item name= "android:fontFamily" > sans-serif-light </item>
+    </style>
+    <style name= "RobotoButtonStyle" parent= "android:Widget.Holo.Button" >
+        <item name= "android:fontFamily" > sans-serif-light </item>
+    </style>
+</resources>

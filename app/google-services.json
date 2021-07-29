@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "693550310460",
+    "firebase_url": "https://aminox-slimakoi.firebaseio.com",
+    "project_id": "aminox-slimakoi",
+    "storage_bucket": "aminox-slimakoi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693550310460:android:4c5b51e0a8a5bd09b98f39",
+        "android_client_info": {
+          "package_name": "com.slimakoi.aminox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693550310460-49mrp50c5gg9olfteud3f81067mkjpoe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.slimakoi.aminox",
+            "certificate_hash": "fd79c32f170b8737a6b316f228a8cbdff5495e01"
+          }
+        },
+        {
+          "client_id": "693550310460-gtdfkup338iibaa6qjcdrduntmh13ui7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.slimakoi.aminox",
+            "certificate_hash": "fc56e16cf2d6e458ed4de86ec8f0597cc74700b7"
+          }
+        },
+        {
+          "client_id": "693550310460-h0ajiuvkm5q7kr6lps7qqn80tat6s2pe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlWm-EC0Af8zRiuQtzhJrEMXP9bcrEWIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693550310460-h0ajiuvkm5q7kr6lps7qqn80tat6s2pe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
