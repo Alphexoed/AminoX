@@ -1,256 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ActionStartChatLayout"
-    android:layout_width="320dp"
-    android:layout_height="320dp"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_gravity="center"
-    android:background="@color/backgroundDarker"
-    android:padding="6dp"
-    tools:context=".ActionSelectorActivity">
-
+    android:id="@id/ActionStartChatLayout"
+    android:background="#ff130e41"
+    android:padding="6.0dip"
+    android:layout_width="320.0dip"
+    android:layout_height="320.0dip"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <CheckBox
-        android:id="@+id/checkStartChatBypass"
+        android:textColor="@color/white"
+        android:id="@id/checkStartChatBypass"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="2.0dip"
         android:text="@string/start_as_group_bypass"
-        android:textColor="@color/white"
         android:buttonTint="@color/accent"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/buttonStartChatClose"
+        app:layout_constraintBottom_toTopOf="@id/buttonStartChatClose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStartChatSearch"
+        app:layout_constraintTop_toBottomOf="@id/buttonStartChatSearch"
         app:layout_constraintVertical_bias="0.65" />
-
     <Button
-        android:id="@+id/buttonStartChatStart"
-        android:layout_width="162dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="32dp"
+        android:textColor="#ff130e41"
+        android:id="@id/buttonStartChatStart"
         android:background="@drawable/buttongradient"
-        android:clickable="true"
         android:focusable="true"
+        android:clickable="true"
+        android:layout_width="162.0dip"
+        android:layout_height="48.0dip"
+        android:layout_marginTop="4.0dip"
+        android:layout_marginBottom="32.0dip"
         android:text="@string/start_chat"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearObjectId"
+        app:layout_constraintTop_toBottomOf="@id/linearObjectId"
         app:layout_constraintVertical_bias="0.0" />
-
     <Button
-        android:id="@+id/buttonStartChatSearch"
-        android:layout_width="142dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/buttongradient"
-        android:clickable="true"
+        android:textColor="#ff11f7d1"
+        android:id="@id/buttonStartChatSearch"
+        android:background="@drawable/buttongradient2"
         android:focusable="true"
+        android:clickable="true"
+        android:layout_width="142.0dip"
+        android:layout_height="48.0dip"
+        android:layout_marginTop="4.0dip"
+        android:layout_marginBottom="32.0dip"
         android:text="@string/search"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearObjectId"
+        app:layout_constraintTop_toBottomOf="@id/linearObjectId"
         app:layout_constraintVertical_bias="0.0" />
-
     <Button
-        android:id="@+id/buttonStartChatClose"
-        android:layout_width="128dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/buttongradient"
-        android:clickable="true"
+        android:textColor="#ff11f7d1"
+        android:id="@id/buttonStartChatClose"
+        android:background="@drawable/buttongradient2"
         android:focusable="true"
+        android:clickable="true"
+        android:layout_width="128.0dip"
+        android:layout_height="48.0dip"
+        android:layout_marginTop="24.0dip"
         android:text="@string/close"
         android:textAlignment="center"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
     <EditText
-        android:id="@+id/inputStartChat"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:background="@drawable/inputbox"
-        android:hint="@string/target_url"
-        android:importantForAutofill="no"
-        android:inputType="textUri|textShortMessage|textLongMessage|text"
         android:textColor="@color/white"
-        android:textColorHint="@color/greyVeryLight"
+        android:textColorHint="#ffd0d0e8"
+        android:id="@id/inputStartChat"
+        android:background="@drawable/inputbox"
+        android:padding="10.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="48.0dip"
+        android:hint="@string/target_url"
+        android:ems="10"
+        android:inputType="textLongMessage"
+        android:importantForAutofill="no"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
     <LinearLayout
-        android:id="@+id/linearLayoutNickname"
-        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@id/linearLayoutNickname"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:weightSum="100"
+        android:weightSum="100.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputStartChat">
-
+        app:layout_constraintTop_toBottomOf="@id/inputStartChat">
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="200.0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:weightSum="100">
-
+            android:weightSum="100.0"
+            android:layout_weight="50.0">
             <TextView
-                android:id="@+id/layoutNickname"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="50"
-                android:gravity="center"
+                android:textSize="14.0sp"
+                android:textStyle="bold"
+                android:textColor="@color/accent"
+                android:gravity="center|left"
+                android:id="@id/layoutNickname"
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip"
+                android:layout_marginLeft="10.0dip"
                 android:text="@string/nickname"
-                android:textAlignment="center"
-                android:textColor="@color/accent"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
+                android:layout_weight="50.0" />
         </LinearLayout>
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:weightSum="100">
-
+            android:weightSum="100.0"
+            android:layout_weight="50.0">
             <TextView
-                android:id="@+id/infoIdNicknameStartChat"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="50"
-                android:gravity="center"
-                android:text="@string/unknown"
-                android:textAlignment="textStart"
                 android:textColor="@color/white"
-                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
+                android:gravity="center"
+                android:id="@id/infoIdNicknameStartChat"
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip"
+                android:text="@string/unknown"
+                android:layout_weight="50.0"
+                android:textAlignment="textStart" />
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
-        android:id="@+id/linearLayoutCommunity"
-        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@id/linearLayoutCommunity"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:weightSum="100"
+        android:weightSum="100.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNickname">
-
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutNickname">
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="200.0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:weightSum="100">
-
+            android:weightSum="100.0"
+            android:layout_weight="50.0">
             <TextView
-                android:id="@+id/layoutCommunity"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="50"
-                android:gravity="center"
+                android:textSize="14.0sp"
+                android:textStyle="bold"
+                android:textColor="@color/accent"
+                android:gravity="center|left"
+                android:id="@id/layoutCommunity"
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip"
+                android:layout_marginLeft="10.0dip"
                 android:text="@string/community"
-                android:textAlignment="center"
-                android:textColor="@color/accent"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
+                android:layout_weight="50.0" />
         </LinearLayout>
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:weightSum="100">
-
+            android:weightSum="100.0"
+            android:layout_weight="50.0">
             <TextView
-                android:id="@+id/infoIdCommunityStartChat"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="50"
-                android:gravity="center"
-                android:text="@string/unknown"
-                android:textAlignment="textStart"
                 android:textColor="@color/white"
-                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
+                android:gravity="center"
+                android:id="@id/infoIdCommunityStartChat"
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip"
+                android:text="@string/unknown"
+                android:layout_weight="50.0"
+                android:textAlignment="textStart" />
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
-        android:id="@+id/linearObjectId"
-        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@id/linearObjectId"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:weightSum="100"
+        android:weightSum="100.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCommunity">
-
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutCommunity">
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="200.0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:weightSum="100">
-
+            android:weightSum="100.0"
+            android:layout_weight="50.0">
             <TextView
-                android:id="@+id/layoutObjectId"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="50"
-                android:gravity="center"
-                android:text="@string/object_id"
-                android:textAlignment="center"
-                android:textColor="@color/accent"
-                android:textSize="14sp"
+                android:textSize="14.0sp"
                 android:textStyle="bold"
-                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
+                android:textColor="@color/accent"
+                android:gravity="center|left"
+                android:id="@id/layoutObjectId"
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip"
+                android:layout_marginLeft="10.0dip"
+                android:text="@string/object_id"
+                android:layout_weight="50.0" />
         </LinearLayout>
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:weightSum="100">
-
+            android:weightSum="100.0"
+            android:layout_weight="50.0">
             <TextView
-                android:id="@+id/infoIdObjectIdStartChat"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="50"
-                android:gravity="center"
-                android:text="@string/unknown"
-                android:textAlignment="textStart"
                 android:textColor="@color/white"
-                tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
+                android:gravity="center"
+                android:id="@id/infoIdObjectIdStartChat"
+                android:layout_width="fill_parent"
+                android:layout_height="40.0dip"
+                android:text="@string/unknown"
+                android:layout_weight="50.0"
+                android:textAlignment="textStart" />
         </LinearLayout>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

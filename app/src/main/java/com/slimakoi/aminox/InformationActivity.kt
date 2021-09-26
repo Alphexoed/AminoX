@@ -51,6 +51,7 @@ class InformationActivity : AppCompatActivity() {
         val appVersion = findViewById<TextView>(R.id.textCurrentVersion)
         val infoCreditsSlimakoi = findViewById<TextView>(R.id.infoCreditsSlimakoi)
         val infoCreditsAbodx = findViewById<TextView>(R.id.infoCreditsAbodx)
+        val infoCreditsKapidev = findViewById<TextView>(R.id.infoCreditsKapidev)
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -86,6 +87,7 @@ class InformationActivity : AppCompatActivity() {
 
         infoCreditsSlimakoi.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://linktr.ee/Slimakoi"))) }
         infoCreditsAbodx.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://instabio.cc/21127nhPn3y"))) }
+        infoCreditsKapidev.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Kapideveloper"))) }
 
         infoBoard.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

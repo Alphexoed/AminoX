@@ -1,1419 +1,1361 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/InformationActivityLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundDarker"
-    android:padding="6dp"
-    tools:context=".InformationActivity">
-
-    <TextView
-        android:id="@+id/infoCreditsSlimakoi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/slimakoi"
-        android:textColor="@color/accent"
-        android:textSize="24sp"
-        android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/infoCreditsSlimakoiDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/developer_of_aminox"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoCreditsSlimakoi"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/infoCreditsAbodxDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/developing_app_protection"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoCreditsAbodx"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/infoCreditsAbodx"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="152dp"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/abodx"
-        android:textColor="@color/accent"
-        android:textSize="24sp"
-        android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoCreditsSlimakoiDesc"
-        app:layout_constraintVertical_bias="0.02" />
-
-
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/InformationActivityLayout"
+    android:padding="6.0dip"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="432dp"
-        android:background="@color/backgroundDark"
-        app:layout_constraintBottom_toTopOf="@+id/textCurrentVersion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoCreditsAbodxDesc"
-        app:layout_constraintVertical_bias="0.2">
-
-        <LinearLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/linearLayoutManufacturer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/infoCreditsAbodxDesc">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutManufacturer"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/manufacturer"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoManufacturer"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutModel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutManufacturer">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutModel"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/model"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoModel"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutBrand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutModel">
-
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutBrand"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/brand"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoBrand"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutBoard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutBrand">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutBoard"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/board"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoBoard"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutBootloader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutBoard">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutBootloader"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/bootloader"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoBootloader"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutDevice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutBootloader">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutDevice"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/device"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoDevice"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutProduct"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutDevice">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutProduct"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/product"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoProduct"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutDisplay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutProduct">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutDisplay"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/display"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoDisplay"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutFingerprint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutDisplay">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutFingerprint"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/fingerprint"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoFingerprint"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutHardware"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutFingerprint">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutHardware"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/hardware"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoHardware"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutHost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutHardware">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutHost"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/host"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoHost"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutHost">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/id"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutTags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutId">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutTags"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/tags"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoTags"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutTags">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/time"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutTime"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/user"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutOsRelease"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutUser"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutOsRelease"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/infoOsRelease"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoOsRelease"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutOsVersion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutOsRelease"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutOsVersion"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/infoOsVersion"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoOsVersion"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutOsCodename"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutOsVersion"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutOsCodename"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/infoOsCodename"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoOsCodename"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutOsIncremental"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutOsCodename"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutOsIncremental"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/infoOsIncremental"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoOsIncremental"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutSecurity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutOsIncremental"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutSecurity"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/infoSecurity"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoSecurity"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutAndroidId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutSecurity"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutAndroidId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/infoAndroidId"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoAndroidId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutSignatureId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutAndroidId"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutSignatureId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/infoSignatureId"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoSignatureId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutPremium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutAndroidId"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutPremium"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/isPremium"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoPremium"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutDeviceId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutPremium"
-                tools:ignore="TooManyViews">
-
-                <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/layoutDeviceId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:text="@string/deviceId"
-                        android:textAlignment="center"
-                        android:textColor="@color/accent"
-                        android:textStyle="bold"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:weightSum="100">
-
-                    <TextView
-                        android:id="@+id/infoDeviceId"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="50"
-                        android:gravity="center"
-                        android:scrollHorizontally="true"
-                        android:text="@string/unknown"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        tools:ignore="InefficientWeight,NestedWeights,RtlCompat" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <TextView
-        android:id="@+id/textLatestVersion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/unknown"
-        android:textColor="@color/white"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/textCurrentVersion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/unknown"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/textLatestVersion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+
+            <TextView
+                android:id="@id/infoCreditsSlimakoi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/slimakoi"
+                android:textColor="#ff11f7d1"
+                android:textSize="24.0sp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@id/infoCreditsSlimakoiDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/developer_of_aminox"
+                android:textColor="@color/white"
+                android:textSize="18.0sp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/infoCreditsSlimakoi"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@id/infoCreditsAbodxDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/developing_app_protection"
+                android:textColor="@color/white"
+                android:textSize="18.0sp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/infoCreditsAbodx"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@id/infoCreditsAbodx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="152.0dip"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/abodx"
+                android:textColor="#ff11f7d1"
+                android:textSize="24.0sp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/infoCreditsSlimakoiDesc"
+                app:layout_constraintVertical_bias="0.02" />
+
+            <TextView
+                android:id="@id/infoCreditsKapidevDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/aminox_redesign"
+                android:textColor="@color/white"
+                android:textSize="18.0sp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/infoCreditsKapidev"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@id/infoCreditsKapidev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="152.0dip"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/kapidev"
+                android:textColor="#ff11f7d1"
+                android:textSize="24.0sp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/infoCreditsAbodxDesc"
+                app:layout_constraintVertical_bias="0.02" />
+
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/windowstyle2"
+                android:padding="12.0dip"
+                app:layout_constraintBottom_toTopOf="@id/textCurrentVersion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/infoCreditsKapidevDesc"
+                app:layout_constraintVertical_bias="0.2">
+
+                <LinearLayout
+                    android:id="@id/container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutManufacturer"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/infoCreditsKapidevDesc">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutManufacturer"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/manufacturer"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold"
+                                tools:ignore="RtlHardcoded" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoManufacturer"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutModel"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutManufacturer">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutModel"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/model"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoModel"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutBrand"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutModel">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutBrand"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/brand"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoBrand"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutBoard"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutBrand">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutBoard"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/board"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoBoard"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutBootloader"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutBoard">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutBootloader"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/bootloader"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoBootloader"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutDevice"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutBootloader">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutDevice"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/device"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoDevice"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutProduct"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutDevice">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutProduct"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/product"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoProduct"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutDisplay"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutProduct">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutDisplay"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/display"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoDisplay"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutFingerprint"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutDisplay">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutFingerprint"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/fingerprint"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoFingerprint"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutHardware"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutFingerprint">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutHardware"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/hardware"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoHardware"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutHost"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutHardware">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutHost"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/host"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoHost"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutId"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutHost">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/id"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutTags"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutId">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutTags"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/tags"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoTags"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutTime"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutTags">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutTime"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/time"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoTime"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutUser"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutTime">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutUser"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/user"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoUser"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutOsRelease"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutUser">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutOsRelease"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/infoOsRelease"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoOsRelease"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutOsVersion"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutOsRelease">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutOsVersion"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/infoOsVersion"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoOsVersion"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutOsCodename"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutOsVersion">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutOsCodename"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/infoOsCodename"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoOsCodename"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutOsIncremental"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutOsCodename">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutOsIncremental"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/infoOsIncremental"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoOsIncremental"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutSecurity"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutOsIncremental">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutSecurity"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/infoSecurity"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoSecurity"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutAndroidId"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutSecurity">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutAndroidId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/infoAndroidId"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoAndroidId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutSignatureId"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutAndroidId">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutSignatureId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/infoSignatureId"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoSignatureId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutPremium"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutAndroidId">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutPremium"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/isPremium"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoPremium"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/linearLayoutDeviceId"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="100.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutPremium">
+
+                        <LinearLayout
+                            android:layout_width="200.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:orientation="vertical"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/layoutDeviceId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center|left"
+                                android:text="@string/deviceId"
+                                android:textColor="@color/accent"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="50.0"
+                            android:weightSum="100.0">
+
+                            <TextView
+                                android:id="@id/infoDeviceId"
+                                android:layout_width="fill_parent"
+                                android:layout_height="32.0dip"
+                                android:layout_marginStart="10.0dip"
+                                android:layout_weight="50.0"
+                                android:gravity="center"
+                                android:scrollHorizontally="true"
+                                android:text="@string/unknown"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white"
+                                android:textSize="12.0sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <TextView
+                android:id="@id/textLatestVersion"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unknown"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@id/textCurrentVersion"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unknown"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@id/textLatestVersion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

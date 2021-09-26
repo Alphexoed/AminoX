@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.slimakoi.aminox">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    android:compileSdkVersion="31"
+    android:compileSdkVersionCodename="12"
+    package="com.slimakoi.aminox"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission
+        android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission
+        android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppBgTheme"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m"
-        tools:ignore="AllowBackup">
-        <activity android:name=".MainActivity">
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        tools:targetApi="p">
+        <activity
+            android:name="com.slimakoi.aminox.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity android:name=".CommunitySelectorActivity" />
-        <activity android:name=".ActionSelectorActivity" />
-        <activity android:name=".EditTitlesActivity" />
-        <activity android:name=".InformationActivity" />
-        <activity android:name=".ChatActivity" />
-
+        <activity
+            android:name="com.slimakoi.aminox.CommunitySelectorActivity" />
+        <activity
+            android:name="com.slimakoi.aminox.ActionSelectorActivity" />
+        <activity
+            android:name="com.slimakoi.aminox.EditTitlesActivity" />
+        <activity
+            android:name="com.slimakoi.aminox.InformationActivity" />
+        <activity
+            android:name="com.slimakoi.aminox.ChatActivity" />
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />

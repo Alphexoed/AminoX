@@ -16,7 +16,6 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.textColor
@@ -107,7 +106,6 @@ class MainActivity : AppCompatActivity() {
         val strNameAppDev = getString(R.string.developer_of_aminox)
         val strNameProtectionDev = getString(R.string.developing_app_protection)
         val strNameSlimakoi = getString(R.string.slimakoi)
-
 
         if (strNameCredits != object : Any() { var t = 0
                 override fun toString(): String {
@@ -1252,7 +1250,6 @@ class MainActivity : AppCompatActivity() {
         private val updateStatus: TextView,
         private val buttonCheckClose: Button
     ) : Runnable {
-        @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("SetTextI18n")
         override fun run() {
             ctx.runOnUiThread {
@@ -1546,11 +1543,8 @@ class MainActivity : AppCompatActivity() {
                             val bitmapResized: Bitmap =
                                 Bitmap.createScaledBitmap(b, 430, 430, false)
 
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                blocker.foreground = BitmapDrawable(bitmapResized)
-                                blocker.foregroundGravity =
-                                    Gravity.END + Gravity.FILL_VERTICAL + Gravity.CENTER_VERTICAL
-                            }
+                            blocker.foreground = BitmapDrawable(bitmapResized)
+                            blocker.foregroundGravity = Gravity.END + Gravity.FILL_VERTICAL + Gravity.CENTER_VERTICAL
                         } catch (e: java.lang.Exception) {
                             Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while setting picture -- $e")
                         }
@@ -1625,10 +1619,8 @@ class MainActivity : AppCompatActivity() {
                             val b: Bitmap = (drawableIcon as BitmapDrawable).bitmap
                             val bitmapResized: Bitmap = Bitmap.createScaledBitmap(b, 430, 430, false)
 
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                banned.foreground = BitmapDrawable(bitmapResized)
-                                banned.foregroundGravity = Gravity.END + Gravity.FILL_VERTICAL + Gravity.CENTER_VERTICAL
-                            }
+                            banned.foreground = BitmapDrawable(bitmapResized)
+                            banned.foregroundGravity = Gravity.END + Gravity.FILL_VERTICAL + Gravity.CENTER_VERTICAL
                         } catch (e: java.lang.Exception) {
                             Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while setting picture -- $e")
                         }

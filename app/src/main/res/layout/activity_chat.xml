@@ -2,35 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/MainActivityLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundDarker"
-    android:padding="6dp"
-    tools:context=".ChatActivity">
+    android:id="@id/MainActivityLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="28.0dip">
 
     <org.deejdev.twowaynestedscrollview.TwoWayNestedScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:id="@id/chatLogger"
+        android:layout_width="305dp"
+        android:layout_height="580dp"
+        android:background="@drawable/windowstyle2"
+        android:padding="15.0dip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/chatScroll"
-            android:layout_width="match_parent"
+            android:id="@id/chatScroll"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="14.0sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@id/titleChatLogger" />
     </org.deejdev.twowaynestedscrollview.TwoWayNestedScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
