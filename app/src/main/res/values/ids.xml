@@ -103,7 +103,6 @@
     <item type="id" name="buttonKickUserSend"/>
     <item type="id" name="buttonLogin"/>
     <item type="id" name="buttonLottery"/>
-    <item type="id" name="buttonNaN"/>
     <item type="id" name="buttonPanel"/>
     <item type="id" name="buttonQuizPlayer"/>
     <item type="id" name="buttonSend"/>
@@ -454,4 +453,6 @@
     <item type="id" name="idtagtitle"/>
     <item type="id" name="chatLogger"/>
     <item type="id" name="titleChatLogger"/>
+    <item type="id" name="buttonFarmer"/>
+    <item type="id" name="buttonNaN"/>
 </resources>

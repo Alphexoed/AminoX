@@ -196,9 +196,11 @@
     <string name="user">User</string>
     <string name="verify_your_account">Verify your Account</string>
     <string name="warning_title">WARN_TITLE</string>
-    <string name="titlecomidselector">Select a Community...</string>
+    <string name="titlecomidselector">Select a Community…</string>
     <string name="aminox_redesign">AminoX UI Redesign</string>
     <string name="kapidev">Kapidev</string>
     <string name="tageditor">Tag Editor</string>
     <string name="chatLoggerTitle">Chat Logger</string>
+    <string name="farmer">Farmer</string>
+    <string name="aminox_logo_description">AminoX Logo</string>
 </resources>

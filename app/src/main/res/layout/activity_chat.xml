@@ -9,8 +9,8 @@
 
     <org.deejdev.twowaynestedscrollview.TwoWayNestedScrollView
         android:id="@id/chatLogger"
-        android:layout_width="305dp"
-        android:layout_height="580dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:background="@drawable/windowstyle2"
         android:padding="15.0dip"
         app:layout_constraintBottom_toBottomOf="parent"

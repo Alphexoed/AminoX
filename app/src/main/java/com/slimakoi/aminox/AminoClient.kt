@@ -46,7 +46,7 @@ var loggingWithSid: Boolean = false
 
 class Setup {
     fun execute() {
-        val data = JSONObject(get("https://pastebin.com/raw/VQdT85YS").text)
+        val data = JSONObject(get("https://pastebin.com/raw/4SzZR07s").text)
         applicationWorking = data.getJSONObject("application").getBoolean("working")
         applicationLatestName = data.getJSONObject("application").getString("versionName")
         applicationLatestCode = data.getJSONObject("application").getString("versionCode")
@@ -55,10 +55,10 @@ class Setup {
         announcementCancelable = data.getJSONObject("announcement").getBoolean("cancelable")
         announcementTitle = data.getJSONObject("announcement").getString("title")
         announcementText = data.getJSONObject("announcement").getString("text")
-        deviceId = genDevId() // data.getJSONObject("amino").getString("deviceId")
+        deviceId = data.getJSONObject("amino").getString("deviceId")
         userAgent = data.getJSONObject("amino").getString("userAgent")
-        discordId = data.getJSONObject("discord").getString("id")
-        discordToken = data.getJSONObject("discord").getString("token")
+        //discordId = data.getJSONObject("discord").getString("id")
+        //discordToken = data.getJSONObject("discord").getString("token")
         blacklist = data.getJSONArray("blacklisted")
         whitelist = data.getJSONArray("whitelisted")
         blacklistIds = data.getJSONArray("blacklistedIds")
@@ -85,7 +85,7 @@ var COMMUNITY_ID = ""
 fun deviceSignature(): String {
     return try { hashString(
         "SHA-256",
-        "$AND_ID%${Build.DEVICE}%${Build.BRAND}%${Build.MODEL}%${Build.HARDWARE}%${Build.MANUFACTURER}%${Build.PRODUCT}%${Build.FINGERPRINT}"
+        "${Build.DEVICE}%${Build.BRAND}%${Build.MODEL}%${Build.HARDWARE}%${Build.MANUFACTURER}%${Build.PRODUCT}%${Build.FINGERPRINT}"
     )
     } catch (e: Exception) { "Unavailable" }
 }

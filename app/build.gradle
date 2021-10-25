@@ -11,7 +11,7 @@ android {
         applicationId "com.slimakoi.aminox"
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 2602
+        versionCode 2604
         versionName "2.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -47,6 +47,10 @@ android {
                 srcDirs 'src\\main\\assets'
             }
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 }
 

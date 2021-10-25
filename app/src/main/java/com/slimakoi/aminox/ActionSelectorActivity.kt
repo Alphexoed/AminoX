@@ -60,6 +60,7 @@ class ActionSelectorActivity : AppCompatActivity() {
         val buttonUnfollow = findViewById<Button>(R.id.buttonUnfollow)
         val buttonChatStart = findViewById<Button>(R.id.buttonChatStart)
         val buttonQuizPlayer = findViewById<Button>(R.id.buttonQuizPlayer)
+        val buttonFarmer = findViewById<Button>(R.id.buttonFarmer)
 
         val constraintLayout = findViewById<ConstraintLayout>(R.id.ActionSelectorLayout)
         val constraintSet = ConstraintSet()
@@ -69,10 +70,12 @@ class ActionSelectorActivity : AppCompatActivity() {
 
         credits.setOnClickListener { val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://linktr.ee/Slimakoi")); startActivity(i) }
 
+        /*
         if (WHITELISTED) {
             sendMessageButton.visibility = View.VISIBLE
             buttonStartChat.visibility = View.VISIBLE
         }
+         */
 
         val aminoObject = JSONObject(getAminoProfile().toString())
         val json: JSONObject = aminoObject.getJSONObject("userProfile")
@@ -81,14 +84,12 @@ class ActionSelectorActivity : AppCompatActivity() {
         val icon = json.getString("icon").toString()
         val role = json.getString("role").toInt()
         try {
-            val warns = JSONObject(json.getString("adminInfo")).getString("warningCount")
-                .toInt(); warningTitle.text = "$warns Warns"
+            val warns = JSONObject(json.getString("adminInfo")).getString("warningCount").toInt(); warningTitle.text = "$warns Warns"
         } catch (error: JSONException) {
             warningTitle.text = "? Warns"
         }
         try {
-            val strikes = JSONObject(json.getString("adminInfo")).getString("strikeCount")
-                .toInt(); strikeTitle.text = "$strikes Strikes"
+            val strikes = JSONObject(json.getString("adminInfo")).getString("strikeCount").toInt(); strikeTitle.text = "$strikes Strikes"
         } catch (error: JSONException) {
             strikeTitle.text = "? Strikes"
         }
@@ -591,7 +592,7 @@ class ActionSelectorActivity : AppCompatActivity() {
             startChatWindow.layoutParams.width = (320 * windowScale).toInt()
             startChatWindow.isFocusable = true
 
-            if (WHITELISTED) { checkStartChatBypass.visibility = View.VISIBLE } else { }
+            //if (WHITELISTED) { checkStartChatBypass.visibility = View.VISIBLE } else { }
         }
 
         var startChatObjectIdX = ""
@@ -922,5 +923,9 @@ class ActionSelectorActivity : AppCompatActivity() {
         }
 
         buttonAQuizPlayerClose.setOnClickListener { quizPlayerPopup.dismiss() }
+
+        buttonFarmer.setOnClickListener {
+            Toast.makeText(this, "Work in progress", Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -66,11 +66,14 @@ class ChatActivity : AppCompatActivity() {
 
         Toast.makeText(this, "This is a beta feature, it might have bugs!", Toast.LENGTH_LONG).show()
 
+        val final = "$deviceId|${System.currentTimeMillis()}"
+
         val client = OkHttpClient()
         val request: Request = Request.Builder()
-            .url("wss://ws1.narvii.com?signbody=$deviceId%7C${System.currentTimeMillis()}")
+            .url("wss://ws1.narvii.com?signbody=${final.replace("|", "%7C")}")
             .header("NDCDEVICEID", deviceId)
             .header("NDCAUTH", "sid=$SID")
+            .header("NDC-MSG-SIG", ndcMsgSig(final))
             .build()
         val listener = EchoWebSocketListener(this, findViewById(R.id.chatScroll))
         var ws: WebSocket
