@@ -14,7 +14,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-@Suppress("DEPRECATION")
 class InformationActivity : AppCompatActivity() {
     @SuppressLint("HardwareIds", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,11 +74,11 @@ class InformationActivity : AppCompatActivity() {
         infoTags.text = Build.TAGS
         infoTime.text = Build.TIME.toString()
         infoUser.text = Build.USER
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { infoOsVersion.text = Build.VERSION.BASE_OS } else { infoOsVersion.text = "Unavailable" }
+        infoOsVersion.text = Build.VERSION.BASE_OS
         infoOsCodename.text = Build.VERSION.CODENAME
         infoOsIncremental.text = Build.VERSION.INCREMENTAL
         infoOsRelease.text = "${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { infoSecurity.text = Build.VERSION.SECURITY_PATCH } else { infoSecurity.text = "Unavailable" }
+        infoSecurity.text = Build.VERSION.SECURITY_PATCH
         infoAndroidId.text = AND_ID
         infoSignatureId.text = DEV_SIG
         infoPremium.text = WHITELISTED.toString()
@@ -95,10 +94,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'BOARD' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoBoard.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoBrand.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoBrand.text))
             Toast.makeText(this, "Copied 'BRAND' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoBrand.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoManufacturer.setOnClickListener {
@@ -107,10 +116,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'MANUFACTURER' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoManufacturer.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoModel.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoModel.text))
             Toast.makeText(this, "Copied 'MODEL' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoModel.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoBootloader.setOnClickListener {
@@ -119,10 +138,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'BOOTLOADER' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoBootloader.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoDevice.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoDevice.text))
             Toast.makeText(this, "Copied 'DEVICE' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoDevice.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoProduct.setOnClickListener {
@@ -131,10 +160,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'PRODUCT' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoProduct.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoDisplay.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoDisplay.text))
             Toast.makeText(this, "Copied 'DISPLAY' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoDisplay.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoFingerprint.setOnClickListener {
@@ -143,10 +182,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'FINGERPRINT' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoFingerprint.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoHardware.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoHardware.text))
             Toast.makeText(this, "Copied 'HARDWARE' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoHardware.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoHost.setOnClickListener {
@@ -155,10 +204,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'HOST' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoHost.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoId.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoId.text))
             Toast.makeText(this, "Copied 'ID' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoId.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoTags.setOnClickListener {
@@ -167,10 +226,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'TAGS' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoTags.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoTime.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoTime.text))
             Toast.makeText(this, "Copied 'TIME' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoTime.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoUser.setOnClickListener {
@@ -179,10 +248,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'USER' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoUser.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoOsVersion.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoOsVersion.text))
             Toast.makeText(this, "Copied 'BASE_OS' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoOsVersion.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoOsCodename.setOnClickListener {
@@ -191,10 +270,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'CODENAME' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoOsCodename.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoOsIncremental.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoOsIncremental.text))
             Toast.makeText(this, "Copied 'INCREMENTAL' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoOsIncremental.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoOsRelease.setOnClickListener {
@@ -203,10 +292,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'RELEASE' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoOsRelease.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoSecurity.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoSecurity.text))
             Toast.makeText(this, "Copied 'SECURITY PATCH' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoSecurity.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoAndroidId.setOnClickListener {
@@ -215,10 +314,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'ANDROID ID' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoAndroidId.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoSignatureId.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoSignatureId.text))
             Toast.makeText(this, "Copied 'SIGNATURE ID' to Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        infoSignatureId.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
 
         infoPremium.setOnClickListener {
@@ -227,21 +336,20 @@ class InformationActivity : AppCompatActivity() {
             Toast.makeText(this, "Copied 'PREMIUM' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
 
+        infoPremium.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
+        }
+
         infoDeviceId.setOnClickListener {
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText(null, infoDeviceId.text))
             Toast.makeText(this, "Copied 'DEVICE ID' to Clipboard!", Toast.LENGTH_SHORT).show()
         }
-    }
-}
 
-/*
-doAsync {
-    while (isChroma) {
-        for (color in listOf("#BB0000", "#BB1100", "#BB2200", "#BB3300", "#BB4400", "#BB5500", "#BB6600", "#BB7700", "#BB8800", "#BB9900", "#BBAA00", "#BBBB00", "#AABB00", "#99BB00", "#88BB00", "#77BB00", "#66BB00", "#55BB00", "#44BB00", "#33BB00", "#22BB00", "#11BB00", "#00BB00", "#00BB11", "#00BB22", "#00BB33", "#00BB44", "#00BB55", "#00BB66", "#00BB77", "#00BB88", "#00BB99", "#00BBAA", "#00BBBB", "#00AABB", "#0099BB", "#0088BB", "#0077BB", "#0066BB", "#0055BB", "#0044BB", "#0033BB", "#0022BB", "#0011BB", "#0000BB", "#1100BB", "#2200BB", "#3300BB", "#4400BB", "#5500BB", "#6600BB", "#7700BB", "#8800BB", "#9900BB", "#AA00BB", "#BB00BB", "#BB00AA", "#BB0099", "#BB0088", "#BB0077", "#BB0066", "#BB0055", "#BB0044", "#BB0033", "#BB0022", "#BB0011")) {
-            this@InformationActivity.window.statusBarColor = Color.parseColor(color); Thread.sleep(50)
+        infoDeviceId.setOnLongClickListener {
+            this.startActivity(Intent(this, EasterEgg::class.java))
+            true
         }
     }
-    this@InformationActivity.window.statusBarColor = Color.parseColor("#4400BB"); Thread.sleep(50)
 }
-*/

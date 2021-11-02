@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
                 WHITELISTED = true
             }
         }
+
+        if (!applicationWorking) {
+            WebHook(this).sendSetupError("Application is Closed", true)
+            setupErrorTrigger(this, "Application is Closed\n\n[$AND_ID:$DEV_SIG]")
+        }
     }
 
     @SuppressLint("InflateParams")

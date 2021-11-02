@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AlertDialog.AppCompat" parent="@style/Base.AlertDialog.AppCompat" />
 
@@ -637,7 +637,7 @@
         </item>
     </style>
 
-    <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="@style/Base.V14.Theme.MaterialComponents.Dialog.Bridge">
+    <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="@style/Base.V14.Theme.MaterialComponents.Dialog.Bridge" tools:ignore="ResourceCycle">
         <item name="android:colorBackground">@color/design_dark_default_color_background</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Dark</item>
         <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
@@ -756,7 +756,7 @@
         </item>
     </style>
 
-    <style name="Base.V14.Theme.MaterialComponents.Light" parent="@style/Base.V14.Theme.MaterialComponents.Light.Bridge">
+    <style name="Base.V14.Theme.MaterialComponents.Light" parent="@style/Base.V14.Theme.MaterialComponents.Light.Bridge" tools:ignore="ResourceCycle">
         <item name="android:colorBackground">@color/design_default_color_background</item>
         <item name="android:buttonBarButtonStyle">?buttonBarButtonStyle</item>
         <item name="android:timePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog
@@ -942,7 +942,7 @@
         </item>
     </style>
 
-    <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="@style/Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge">
+    <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="@style/Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge" tools:ignore="ResourceCycle">
         <item name="android:colorBackground">@color/design_default_color_background</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
         <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
@@ -1730,7 +1730,7 @@
         <item name="track">@drawable/abc_switch_track_mtrl_alpha</item>
     </style>
 
-    <style name="Base.Widget.AppCompat.DrawerArrowToggle" parent="@style/Base.Widget.AppCompat.DrawerArrowToggle.Common">
+    <style name="Base.Widget.AppCompat.DrawerArrowToggle" parent="@style/Base.Widget.AppCompat.DrawerArrowToggle.Common" tools:ignore="ResourceCycle">
         <item name="barLength">18.0dip</item>
         <item name="drawableSize">24.0dip</item>
         <item name="gapBetweenBars">3.0dip</item>

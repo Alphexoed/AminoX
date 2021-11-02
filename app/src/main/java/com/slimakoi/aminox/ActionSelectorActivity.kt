@@ -107,7 +107,9 @@ class ActionSelectorActivity : AppCompatActivity() {
             }
         } else {
             roleTitle.visibility = View.GONE
+            /*
             constraintSet.clone(constraintLayout)
+
             constraintSet.connect(
                 R.id.warningTitle,
                 ConstraintSet.START,
@@ -116,6 +118,8 @@ class ActionSelectorActivity : AppCompatActivity() {
                 0
             )
             constraintSet.applyTo(constraintLayout)
+
+             */
         }
 
         profileNameAction.text = nickname
@@ -924,8 +928,38 @@ class ActionSelectorActivity : AppCompatActivity() {
 
         buttonAQuizPlayerClose.setOnClickListener { quizPlayerPopup.dismiss() }
 
+        // Farmer Action
         buttonFarmer.setOnClickListener {
-            Toast.makeText(this, "Work in progress", Toast.LENGTH_LONG).show()
+            var activityTimes = 0
+            val farmerLoader = AlertDialog.Builder(this).create()
+            farmerLoader.setTitle("Farming Coins on '$COMMUNITY_NAME'")
+            farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: 0 / 70 (0.0%)")
+            farmerLoader.setCancelable(false)
+
+            doAsync {
+                for (i in 0 until 50) {
+                    val activityJSON = JSONObject(sendActivityObject(timestamp = System.currentTimeMillis()))
+                    Log.println(Log.DEBUG, "ACTION-ACTIVITY", activityJSON.toString())
+                    activityTimes += 1
+                    val percent = String.format("%.2f", (activityTimes.toFloat()/70)*100)
+                    farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: $activityTimes / 70 ($percent%)")
+                }
+
+                for (i in 0 until 20) {
+                    val tapjoyJSON = sendTapJoy()
+                    Log.println(Log.DEBUG, "ACTION-TAPJOY", tapjoyJSON.toString())
+                    activityTimes += 1
+                    val percent = String.format("%.2f", (activityTimes.toFloat()/70)*100)
+                    farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: $activityTimes / 70 ($percent%)")
+                }
+
+                runOnUiThread {
+                    farmerLoader.setTitle("Completed farming coins!")
+                    farmerLoader.setMessage("You can now close this tab.\n\nYou may run this script multiple times per day\nSome of the coins may take a full day to receive!")
+                    farmerLoader.setCancelable(true)
+                }
+            }
+            farmerLoader.show()
         }
     }
 }

@@ -10,6 +10,7 @@ import android.os.StrictMode
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
@@ -44,6 +45,12 @@ class EditTitlesActivity : AppCompatActivity() {
         StrictMode.setThreadPolicy(policy)
 
         credits.setOnClickListener { val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://linktr.ee/Slimakoi")); startActivity(i) }
+
+        // Show info popup
+        val invisibleLoader = AlertDialog.Builder(this).create()
+        invisibleLoader.setTitle("How to get invisible titles")
+        invisibleLoader.setMessage("For you to get invisible titles, make the title pure black (#000000)\nIf you want a black title and not the invisible one, add a digit to the color (#010101 for example)")
+        invisibleLoader.show()
 
         val aminoObject = JSONObject(getAminoProfile().toString())
         val json: JSONObject = aminoObject.getJSONObject("userProfile")
@@ -95,8 +102,6 @@ class EditTitlesActivity : AppCompatActivity() {
         aminoImage.settings.useWideViewPort = true
 
         buttonSend.setOnClickListener {
-            var sendInfo = JSONArray()
-
             val count: Int = radioGroupTitles.childCount
             val listOfButtons = ArrayList<Button>()
             val jsonTitles = JSONArray()
@@ -108,7 +113,11 @@ class EditTitlesActivity : AppCompatActivity() {
                     listOfButtons.add(o)
 
                     val colorTemp: ColorDrawable = o.background as ColorDrawable
-                    val color = Integer.toHexString(colorTemp.color).substring(2)
+                    var color = Integer.toHexString(colorTemp.color).substring(2)
+
+                    if (color == "000000") {
+                        color = "AA000000"
+                    }
 
                     val temp = JSONObject()
                     temp.put("title", o.text)

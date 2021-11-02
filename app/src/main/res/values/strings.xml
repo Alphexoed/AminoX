@@ -203,4 +203,7 @@
     <string name="chatLoggerTitle">Chat Logger</string>
     <string name="farmer">Farmer</string>
     <string name="aminox_logo_description">AminoX Logo</string>
+    <string name="neko">Neko!</string>
+    <string name="nyah">Nyah!</string>
+    <string name="nekoText">Oh no! You know you shouldnt be here, right?</string>
 </resources>

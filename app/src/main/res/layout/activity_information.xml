@@ -184,7 +184,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -233,7 +234,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -282,7 +284,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -331,7 +334,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -380,7 +384,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -429,7 +434,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -478,7 +484,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -527,7 +534,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -576,7 +584,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -625,7 +634,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -724,7 +734,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -774,7 +785,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -824,7 +836,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -874,7 +887,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -924,7 +938,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -974,7 +989,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -1024,7 +1040,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -1274,7 +1291,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -1324,7 +1342,8 @@
                                 android:text="@string/unknown"
                                 android:textAlignment="textStart"
                                 android:textColor="@color/white"
-                                android:textSize="12.0sp" />
+                                android:textSize="12.0sp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

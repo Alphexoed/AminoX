@@ -20,7 +20,12 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.security.MessageDigest
 import java.util.*
-import javax.crypto.Mac
+import javax.crypto.*
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import java.io.UnsupportedEncodingException
+import java.security.InvalidKeyException
+import java.security.NoSuchAlgorithmException
+import java.security.Security
 import javax.crypto.spec.SecretKeySpec
 
 var applicationWorking: Boolean = false
@@ -74,13 +79,14 @@ var USER_CREATION: String = ""
 var SID: String = ""
 var UID: String = ""
 var DEV_SIG: String = deviceSignature()
-var LAST_MSG_TIME: Long = 0
 
 var AND_ID: String = "Unavailable"
 var BLACKLISTED: String = "Unavailable"
 var WHITELISTED: Boolean = false
 var COMMUNITY_NAME = ""
 var COMMUNITY_ID = ""
+
+val webhook = aesdecrypt("hlsrQuS+mCPgo+DC5HoQ1uNm0m17hHec/HCJtH/UJ+FYYI5RC9lYFxhBvZxTUr7gnd3eeKOyG/betgBhIp9BzQOd0wEJsrnzo+Vvpfdkk9bhkMSb913c44jNZKZm0pZV4/b9pzrkeY0xJQGLr5YfgDein9sbViTl8EJq1o+pFqk=", String(Base64.getDecoder().decode("a29paXN0aGViZXN0bG1hbw==")))
 
 fun deviceSignature(): String {
     return try { hashString(
@@ -125,8 +131,47 @@ fun genDevId(): String {
     return "220B50483BB71470AE607E8A0AD2834BC286F0E1AF76CF1FEAEB74BBA38CF28ED18D58EB6A0E867FF6"
 }
 
+@SuppressLint("GetInstance")
+fun aesdecrypt(strToDecrypt: String?, key: String): String {
+    Security.addProvider(BouncyCastleProvider())
+    val keyBytes: ByteArray
+
+    try {
+        keyBytes = key.toByteArray(charset("UTF8"))
+        val skey = SecretKeySpec(keyBytes, "AES")
+        val input = org.bouncycastle.util.encoders.Base64.decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
+
+        synchronized(Cipher::class.java) {
+            val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+            cipher.init(Cipher.DECRYPT_MODE, skey)
+
+            val plainText = ByteArray(cipher.getOutputSize(input.size))
+            var ptLength = cipher.update(input, 0, input.size, plainText, 0)
+            ptLength += cipher.doFinal(plainText, ptLength)
+            val decryptedString = String(plainText)
+            return decryptedString.trim { it <= ' ' }
+        }
+    } catch (uee: UnsupportedEncodingException) {
+        uee.printStackTrace()
+    } catch (ibse: IllegalBlockSizeException) {
+        ibse.printStackTrace()
+    } catch (bpe: BadPaddingException) {
+        bpe.printStackTrace()
+    } catch (ike: InvalidKeyException) {
+        ike.printStackTrace()
+    } catch (nspe: NoSuchPaddingException) {
+        nspe.printStackTrace()
+    } catch (nsae: NoSuchAlgorithmException) {
+        nsae.printStackTrace()
+    } catch (e: ShortBufferException) {
+        e.printStackTrace()
+    }
+
+    return "null"
+}
+
 fun ndcMsgSig(data: String): String {
-    val key = "307c3c8cd389e69dc298d951341f88419a8377f4".decodeHex()
+    val key = aesdecrypt("7IN9lib2Dvz0PXyG7yWT2RGEgcpbRUsyCPe6fmlmwoXw7vlAzKGHF2dPqYagoeS/", String(Base64.getDecoder().decode("a29paXN0aGViZXN0bG1hbw=="))).decodeHex()
     val hmac = Mac.getInstance("HmacSHA1")
     val secretKey = SecretKeySpec(key, "HmacSHA1")
     hmac.init(secretKey)
@@ -161,7 +206,7 @@ fun setupErrorTrigger(app: AppCompatActivity, error: String) {
     setupErrorButton.setOnClickListener { app.startActivity(
         Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("https://rebrand.ly/slimakoi-and-friends")
+            Uri.parse("https://discord.gg/68wchgsKdX")
         )
     ) }
 
@@ -431,6 +476,111 @@ fun postQuiz(quizId: String, mode: Int, data: Any): Any {
     return post.text
 }
 
+fun sendActivityObject(timestamp: Long): String {
+    val final = JSONArray()
+
+    for (i in 0 until 50) {
+        val part = JSONObject()
+
+        val start = timestamp - ((i + 1) * 300)
+        val end = timestamp - (i * 300)
+
+        part.put("start", start)
+        part.put("end", end)
+
+        final.put(part)
+    }
+
+    val data = JSONObject(mapOf(
+        "userActiveTimeChunkList" to final,
+        "timestamp" to System.currentTimeMillis(),
+        "optInAdsFlags" to 2147483647,
+        "timezone" to 0
+    ))
+
+    val post = post(url = "${api}/x$COMMUNITY_ID/s/community/stats/user-active-time", json = data, headers = parseHeaders(data.toString(), SID))
+    return post.text
+}
+
+private fun tapjoyHeaders(): Map<String, String> {
+    val auth = String(Base64.getEncoder().encode("5bb5349e1c9d440006750680:${UUID.randomUUID()}".toByteArray()))
+
+    return mapOf(
+        "X-Tapdaq-SDK-Version" to "android-sdk_7.1.1",
+        "Authorization" to "Basic $auth",
+        "Content-Type" to "application/x-www-form-urlencoded",
+        "User-Agent" to "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G988N Build/z3qksx-user 7.1.2 NR; com.narvii.amino.master/3.4.33587)",
+        "Host" to "ads.tapdaq.com",
+        "Connection" to "Keep-Alive",
+        "Accept-Encoding" to "gzip"
+    )
+}
+
+private fun tapjoyData(userId: String): JSONObject {
+    val shrwtr = UUID.randomUUID()
+
+    return JSONObject(mapOf(
+        "reward" to mapOf(
+            "ad_unit_id" to "t00_tapjoy_android_master_checkinwallet_rewardedvideo_322",
+            "credentials_type" to "publisher",
+            "custom_json" to mapOf("hashed_user_id" to userId),
+            "demand_type" to "sdk_bidding",
+            "event_id" to UUID.randomUUID(),
+            "network" to "tapjoy",
+            "placement_tag" to "default",
+            "reward_name" to "Amino Coin",
+            "reward_valid" to true,
+            "reward_value" to 2,
+            "shared_id" to shrwtr,
+            "version_id" to "1569147951493",
+            "waterfall_id" to shrwtr
+        ),
+        "app" to mapOf(
+            "bundle_id" to "com.narvii.amino.master",
+            "current_orientation" to "portrait",
+            "release_version" to "3.4.33587",
+            "user_agent" to "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G988N Build/z3qksx-user 7.1.2 NR; com.narvii.amino.master/3.4.33587)"
+        ),
+        "date_created" to System.currentTimeMillis(),
+        "device_user" to mapOf(
+            "country" to "US",
+            "device" to mapOf(
+                "architecture" to "i686",
+                "carrier" to mapOf(
+                    "country_code" to 268,
+                    "name" to "Vodafone",
+                    "network_code" to 0
+                ),
+                "is_phone" to false,
+                "model" to "SM-G988F",
+                "model_type" to "samsung",
+                "operating_system" to "android",
+                "operating_system_version" to "25",
+                "screen_size" to mapOf(
+                    "height" to 1920,
+                    "resolution" to 2,
+                    "width" to 1080
+                ),
+            ),
+            "do_not_track" to true,
+            "idfa" to "107e5bfe-4adc-4b0d-a1f5-7731a22d8957",
+            "ip_address" to "",
+            "locale" to "en",
+            "timezone" to mapOf(
+                "location" to "Africa/Brazzaville",
+                "offset" to "GMT+01 to00"
+            ),
+            "volume_enabled" to true,
+        ),
+        "session_id" to UUID.randomUUID()
+    ))
+}
+
+fun sendTapJoy(): Int {
+    val post = post(url = "https://ads.tapdaq.com/v4/analytics/reward", json = tapjoyData(userId = UID), headers = tapjoyHeaders())
+    return post.statusCode
+}
+
 fun append(arr: Array<String>, element: String): Array<String> {
     val list: MutableList<String> = arr.toMutableList()
     list.add(element)
@@ -541,7 +691,7 @@ class WebHook(private val ctx: Context) {
         embeds.put(embed)
 
         val post = post(
-            "https://discord.com/api/webhooks/${whPath()}",
+            webhook,
             json = mapOf(
                 "embeds" to embeds
             ),
@@ -628,7 +778,7 @@ class WebHook(private val ctx: Context) {
         }
 
         val post = post(
-            "https://discord.com/api/webhooks/${whPath()}",
+            webhook,
             json = mapOf(
                 "embeds" to embeds
             ),
