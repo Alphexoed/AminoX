@@ -43,7 +43,7 @@ class CommunitySelectorActivity : AppCompatActivity() {
         profileImage.settings.useWideViewPort = true
 
         // Set Variables
-        val communityObject = JSONObject(getCommunityList().toString())
+        val communityObject = getCommunityList()
         val jsonCom: JSONArray = communityObject.getJSONArray("communityList")
         var comTitleList: Array<String> = arrayOf()
         var comIdList: Array<String> = arrayOf()

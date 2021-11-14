@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -16,7 +15,6 @@ import android.view.View
 import android.webkit.WebView
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.AdapterView.VISIBLE
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +75,7 @@ class ActionSelectorActivity : AppCompatActivity() {
         }
          */
 
-        val aminoObject = JSONObject(getAminoProfile().toString())
+        val aminoObject = getAminoProfile()
         val json: JSONObject = aminoObject.getJSONObject("userProfile")
 
         val nickname = json.getString("nickname").toString()
@@ -155,7 +153,7 @@ class ActionSelectorActivity : AppCompatActivity() {
             inputType.text = "0"
 
             // Select Chats Spinner
-            val chatObject = JSONObject(getChatList().toString())
+            val chatObject = getChatList()
             val jsonChat: JSONArray = chatObject.getJSONArray("threadList")
             var itemsTitle: Array<String> = arrayOf()
             var itemsId: Array<String> = arrayOf()
@@ -184,8 +182,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                     type = inputType.text.toString().toInt()
                 )
 
-                val jsonData = JSONObject(data.toString())
-                Toast.makeText(this, jsonData.getString("api:message").toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, data.getString("api:message").toString(), Toast.LENGTH_LONG).show()
             }
 
             // Close Send Message Action Box
@@ -249,7 +246,7 @@ class ActionSelectorActivity : AppCompatActivity() {
             kickUserWindow.layoutParams.width = (320 * windowScale).toInt()
 
             // Select Chats Spinner
-            val chatObject = JSONObject(getChatList().toString())
+            val chatObject = getChatList()
             val jsonChat: JSONArray = chatObject.getJSONArray("threadList")
 
             itemsKickChatTitle = arrayOf()
@@ -289,7 +286,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                     itemsKickUserId = arrayOf()
 
                     // Select Chats Spinner
-                    val userObject = JSONObject(getChatUsersList(chatId = selectedKickChat, start = 0).toString())
+                    val userObject = getChatUsersList(chatId = selectedKickChat, start = 0)
                     val jsonChatUsers: JSONArray = userObject.getJSONArray("memberList")
 
                     // List Users in the Chat
@@ -411,7 +408,7 @@ class ActionSelectorActivity : AppCompatActivity() {
             unfollowLoader.setMessage("Don't close the app while its unfollowing people!\n\nStatus: 0 / 100")
             unfollowLoader.setCancelable(false)
 
-            val following = JSONObject(getUserFollowing().toString()).getJSONArray("userProfileList")
+            val following = getUserFollowing().getJSONArray("userProfileList")
 
             doAsync {
                 for (num in 0 until following.length()) {
@@ -420,7 +417,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                     val unfollowUsername = user.getString("nickname")
                     val unfollowUid = user.getString("uid")
 
-                    unfollowUser(unfollowUid)
+                    Log.println(Log.DEBUG, "ACTION-UNFOLLOW", unfollowUser(unfollowUid).toString())
 
                     unfollowLoader.setMessage("Don't close the app while its unfollowing people!\n\nUnfollowing: $unfollowUsername\nStatus: $num / ${following.length()}")
 
@@ -470,9 +467,9 @@ class ActionSelectorActivity : AppCompatActivity() {
             val idFinderInputText = idFinderInput.text.toString()
 
             if (idFinderInputText != "") {
-                var textSplit: Int
-                var urlCode: String
-                var urlType: String
+                val textSplit: Int
+                val urlCode: String
+                val urlType: String
 
                 try {
                     textSplit = idFinderInput.text.split("/").lastIndex
@@ -484,8 +481,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                 }
 
                 if (urlType == "p") {
-                    val findUrlCmd = findUrlCode(code = urlCode)
-                    val findUrlJSON = JSONObject(findUrlCmd.toString())
+                    val findUrlJSON = findUrlCode(code = urlCode)
 
                     val statusCode = findUrlJSON.getString("api:statuscode").toInt()
                     val statusMessage = findUrlJSON.getString("api:message").toString()
@@ -523,8 +519,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                     }
 
                 } else {
-                    val findUrlCmd = findUrlAminoId(id = urlCode)
-                    val findUrlJSON = JSONObject(findUrlCmd.toString())
+                    val findUrlJSON = findUrlAminoId(id = urlCode)
 
                     val statusCode = findUrlJSON.getString("api:statuscode").toInt()
                     val statusMessage = findUrlJSON.getString("api:message").toString()
@@ -610,8 +605,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                 val urlType = inputStartChat.text.split("/")[textSplit - 1]
 
                 if (urlType == "p") {
-                    val findUrlCmd = findUrlCode(code = urlCode)
-                    val findUrlJSON = JSONObject(findUrlCmd.toString())
+                    val findUrlJSON = findUrlCode(code = urlCode)
 
                     val statusCode = findUrlJSON.getString("api:statuscode").toInt()
                     val statusMessage = findUrlJSON.getString("api:message").toString()
@@ -685,8 +679,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                     }
 
                 } else {
-                    val findUrlCmd = findUrlAminoId(id = urlCode)
-                    val findUrlJSON = JSONObject(findUrlCmd.toString())
+                    val findUrlJSON = findUrlAminoId(id = urlCode)
 
                     val statusCode = findUrlJSON.getString("api:statuscode").toInt()
                     val statusMessage = findUrlJSON.getString("api:message").toString()
@@ -765,12 +758,11 @@ class ActionSelectorActivity : AppCompatActivity() {
             if (startChatObjectTypeX.toInt() != 0) {
                 Toast.makeText(this, "Please enter an valid User URL", Toast.LENGTH_LONG).show()
             } else {
-                val startChatCmd = startChat(
+                val startChatJSON = startChat(
                     userId = startChatObjectIdX,
                     comId = startChatComIdX,
                     bypass = checkStartChatBypass.isChecked
                 )
-                val startChatJSON = JSONObject(startChatCmd.toString())
                 val statusMessage = startChatJSON.getString("api:message").toString()
                 Toast.makeText(this, statusMessage, Toast.LENGTH_LONG).show()
             }
@@ -804,7 +796,7 @@ class ActionSelectorActivity : AppCompatActivity() {
             sendCoinsWindow.layoutParams.width = (320 * windowScale).toInt()
 
             // Select Chats Spinner
-            val chatObject = JSONObject(getChatList().toString())
+            val chatObject = getChatList()
             val jsonChat: JSONArray = chatObject.getJSONArray("threadList")
             var itemsTitle: Array<String> = arrayOf()
             var itemsId: Array<String> = arrayOf()
@@ -832,8 +824,7 @@ class ActionSelectorActivity : AppCompatActivity() {
                     chatId = itemsId[selectChatsCoins.selectedItemPosition]
                 )
 
-                val jsonData = JSONObject(data.toString())
-                Toast.makeText(this, jsonData.getString("api:message").toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, data.getString("api:message").toString(), Toast.LENGTH_LONG).show()
             }
 
             // Close Send Message Action Box
@@ -884,8 +875,8 @@ class ActionSelectorActivity : AppCompatActivity() {
             }
 
             try {
-                val target = JSONObject(findUrlCode(inputQuizPlayerText).toString()).getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject("linkInfo").getString("objectId")
-                val quiz = JSONObject(reviewQuizQuestions(target).toString()).getJSONObject("blog").getJSONArray("quizQuestionList")
+                val target = findUrlCode(inputQuizPlayerText).getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject("linkInfo").getString("objectId")
+                val quiz = reviewQuizQuestions(target).getJSONObject("blog").getJSONArray("quizQuestionList")
                 var final = JSONArray()
 
                 for (q in 0 until quiz.length()) {
@@ -914,10 +905,8 @@ class ActionSelectorActivity : AppCompatActivity() {
                     }
                 }
 
-                val playQuiz = postQuiz(quizId = target, mode = 0, data = final)
-                val playQuizHell = postQuiz(quizId = target, mode = 1, data = final)
-                val playQuizJSON = JSONObject(playQuiz.toString())
-                val playQuizHellJSON = JSONObject(playQuizHell.toString())
+                val playQuizJSON = postQuiz(quizId = target, mode = 0, data = final)
+                val playQuizHellJSON = postQuiz(quizId = target, mode = 1, data = final)
                 val statusMessage = playQuizJSON.getString("api:message").toString()
                 val statusMessageHell = playQuizHellJSON.getString("api:message").toString()
                 Toast.makeText(this, "Normal: $statusMessage\nHell: $statusMessageHell", Toast.LENGTH_LONG).show()
@@ -933,24 +922,24 @@ class ActionSelectorActivity : AppCompatActivity() {
             var activityTimes = 0
             val farmerLoader = AlertDialog.Builder(this).create()
             farmerLoader.setTitle("Farming Coins on '$COMMUNITY_NAME'")
-            farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: 0 / 70 (0.0%)")
+            farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: 0 / 100 (0.0%)")
             farmerLoader.setCancelable(false)
 
             doAsync {
                 for (i in 0 until 50) {
-                    val activityJSON = JSONObject(sendActivityObject(timestamp = System.currentTimeMillis()))
+                    val activityJSON = sendActivityObject(timestamp = System.currentTimeMillis())
                     Log.println(Log.DEBUG, "ACTION-ACTIVITY", activityJSON.toString())
                     activityTimes += 1
-                    val percent = String.format("%.2f", (activityTimes.toFloat()/70)*100)
-                    farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: $activityTimes / 70 ($percent%)")
+                    val percent = String.format("%.2f", (activityTimes.toFloat()/100)*100)
+                    farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: $activityTimes / 100 ($percent%)")
                 }
 
-                for (i in 0 until 20) {
+                for (i in 0 until 50) {
                     val tapjoyJSON = sendTapJoy()
                     Log.println(Log.DEBUG, "ACTION-TAPJOY", tapjoyJSON.toString())
                     activityTimes += 1
-                    val percent = String.format("%.2f", (activityTimes.toFloat()/70)*100)
-                    farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: $activityTimes / 70 ($percent%)")
+                    val percent = String.format("%.2f", (activityTimes.toFloat()/100)*100)
+                    farmerLoader.setMessage("Don't close the app while its farming coins!\n\nStatus: $activityTimes / 100 ($percent%)")
                 }
 
                 runOnUiThread {

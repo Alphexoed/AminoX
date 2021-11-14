@@ -52,7 +52,7 @@ class EditTitlesActivity : AppCompatActivity() {
         invisibleLoader.setMessage("For you to get invisible titles, make the title pure black (#000000)\nIf you want a black title and not the invisible one, add a digit to the color (#010101 for example)")
         invisibleLoader.show()
 
-        val aminoObject = JSONObject(getAminoProfile().toString())
+        val aminoObject = getAminoProfile()
         val json: JSONObject = aminoObject.getJSONObject("userProfile")
         aminoCreation.text = json.getString("createdTime")
 
@@ -127,8 +127,7 @@ class EditTitlesActivity : AppCompatActivity() {
                 jsonTitleData.put("customTitles", jsonTitles)
             }
 
-            val sendJson = sendTitleEdit(jsonOb = jsonTitleData.toString())
-            val titleSendJson = JSONObject(sendJson.toString())
+            val titleSendJson = sendTitleEdit(jsonOb = jsonTitleData.toString())
 
             Toast.makeText(this, titleSendJson.getString("api:message"), Toast.LENGTH_SHORT).show()
         }

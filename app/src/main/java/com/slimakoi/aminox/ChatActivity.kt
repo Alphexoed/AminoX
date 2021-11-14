@@ -38,7 +38,7 @@ class ChatActivity : AppCompatActivity() {
                 val wsChatId = wsChat.getString("threadId")
                 val wsAuthor = wsChat.getJSONObject("author").getString("nickname")
 
-                val wsChatInfo = JSONObject(getChatInfo(comId = wsNdcId.toString(), chatId = wsChatId).toString())
+                val wsChatInfo = getChatInfo(comId = wsNdcId.toString(), chatId = wsChatId)
                 val wsChatTitle = wsChatInfo.getJSONObject("thread").getString("title").toString()
                 val wsChatName = if (wsChatTitle == "null") { wsChatId } else { wsChatTitle }
 
@@ -68,7 +68,6 @@ class ChatActivity : AppCompatActivity() {
 
         val final = "$deviceId|${System.currentTimeMillis()}"
 
-        val client = OkHttpClient()
         val request: Request = Request.Builder()
             .url("wss://ws1.narvii.com?signbody=${final.replace("|", "%7C")}")
             .header("NDCDEVICEID", deviceId)
