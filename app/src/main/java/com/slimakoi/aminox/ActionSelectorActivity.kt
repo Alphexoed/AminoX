@@ -40,6 +40,7 @@ class ActionSelectorActivity : AppCompatActivity() {
         val roleTitle = findViewById<Button>(R.id.roleTitle)
         val warningTitle = findViewById<Button>(R.id.warningTitle)
         val strikeTitle = findViewById<Button>(R.id.strikeTitle)
+        val coinsTitle = findViewById<Button>(R.id.coinsTitle)
         val credits = findViewById<TextView>(R.id.infoTxtCredits5)
         val windowScale: Float = this.resources.displayMetrics.density
 
@@ -60,8 +61,8 @@ class ActionSelectorActivity : AppCompatActivity() {
         val buttonQuizPlayer = findViewById<Button>(R.id.buttonQuizPlayer)
         val buttonFarmer = findViewById<Button>(R.id.buttonFarmer)
 
-        val constraintLayout = findViewById<ConstraintLayout>(R.id.ActionSelectorLayout)
-        val constraintSet = ConstraintSet()
+        //val constraintLayout = findViewById<ConstraintLayout>(R.id.ActionSelectorLayout)
+        //val constraintSet = ConstraintSet()
 
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -80,7 +81,7 @@ class ActionSelectorActivity : AppCompatActivity() {
 
         val nickname = json.getString("nickname").toString()
         val icon = json.getString("icon").toString()
-        val role = json.getString("role").toInt()
+        val role = json.getInt("role")
         try {
             val warns = JSONObject(json.getString("adminInfo")).getString("warningCount").toInt(); warningTitle.text = "$warns Warns"
         } catch (error: JSONException) {
@@ -91,6 +92,10 @@ class ActionSelectorActivity : AppCompatActivity() {
         } catch (error: JSONException) {
             strikeTitle.text = "? Strikes"
         }
+
+        val coinsObject = getWallet()
+        val totalCoins = coinsObject.getJSONObject("wallet").getInt("totalCoins")
+        coinsTitle.text = "$totalCoins Coins"
 
         if (role != 0) {
             roleTitle.visibility = View.VISIBLE
@@ -926,6 +931,9 @@ class ActionSelectorActivity : AppCompatActivity() {
             farmerLoader.setCancelable(false)
 
             doAsync {
+                val configureJSON = configureWallet()
+                Log.println(Log.DEBUG, "ACTION-CONFIGWALLET", configureJSON.toString())
+
                 for (i in 0 until 50) {
                     val activityJSON = sendActivityObject(timestamp = System.currentTimeMillis())
                     Log.println(Log.DEBUG, "ACTION-ACTIVITY", activityJSON.toString())

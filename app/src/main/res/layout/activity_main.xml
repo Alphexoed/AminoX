@@ -48,15 +48,34 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
+
+    <Button
+        android:id="@id/buttonInformation"
+        android:layout_width="52.0dip"
+        android:layout_height="34.0dip"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/buttongradient2"
+        android:clickable="true"
+        android:contentDescription="@string/info_info"
+        android:focusable="true"
+        android:text="@string/information"
+        android:textColor="#ff11f7d1"
+        app:layout_constraintBottom_toTopOf="@+id/buttonFeedback"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <Button
         android:textColor="#ff11f7d1"
-        android:id="@id/buttonInformation"
+        android:id="@id/buttonFeedback"
         android:background="@drawable/buttongradient2"
         android:focusable="true"
         android:clickable="true"
-        android:layout_width="52.0dip"
+        android:layout_width="wrap_content"
         android:layout_height="34.0dip"
-        android:text="@string/information"
+        android:text="@string/feedback"
         android:contentDescription="@string/info_info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +83,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
     <EditText
         android:textColor="@color/white"
         android:textColorHint="#ffb3aeca"

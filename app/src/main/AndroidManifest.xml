@@ -29,6 +29,7 @@
         <activity android:name="com.slimakoi.aminox.EditTitlesActivity" />
         <activity android:name="com.slimakoi.aminox.InformationActivity" />
         <activity android:name="com.slimakoi.aminox.ChatActivity" />
+        <activity android:name="com.slimakoi.aminox.FeedbackActivity" />
         <activity android:name="com.slimakoi.aminox.EasterEgg" />
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"

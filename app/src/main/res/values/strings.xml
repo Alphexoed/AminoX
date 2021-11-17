@@ -206,4 +206,11 @@
     <string name="neko">Neko!</string>
     <string name="nyah">Nyah!</string>
     <string name="nekoText">Oh no! You know you shouldnt be here, right?</string>
+    <string name="coins_title">COINS_TITLE</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="feedback_message">Feedback Message</string>
+    <string name="feedback_name">Feedback Name</string>
+    <string name="feedback_send">Send</string>
+    <string name="feedback_send_dec">Send Feedback Button</string>
+    <string name="feedback">Feedback</string>
 </resources>

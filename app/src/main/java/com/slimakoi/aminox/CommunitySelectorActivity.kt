@@ -53,10 +53,10 @@ class CommunitySelectorActivity : AppCompatActivity() {
             val item = jsonCom.getJSONObject(i)
             val comObj = JSONObject(item.toString())
             val comTitleStr = comObj.getString("name")
-            val comIdStr = comObj.getString("ndcId")
+            val comIdStr = comObj.getInt("ndcId")
 
             comTitleList = append(comTitleList, comTitleStr)
-            comIdList = append(comIdList, comIdStr)
+            comIdList = append(comIdList, comIdStr.toString())
 
             // Fill the Radio Group with the Communities Gathered
             val rb = RadioButton(this)

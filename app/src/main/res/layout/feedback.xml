@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/FeedbackActivityLayout"
+    android:padding="6.0dip"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/feedbackConstraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@id/feedbackTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/send_feedback"
+            android:textColor="#ff11f7d1"
+            android:textSize="24.0sp"
+            android:typeface="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Space
+        android:id="@id/feedbackSpace1"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackConstraintLayout1">
+    </Space>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/feedbackConstraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackSpace1">
+
+        <EditText
+            android:id="@id/feedbackInputName"
+            android:layout_width="fill_parent"
+            android:layout_height="48.0dip"
+            android:background="@drawable/inputbox"
+            android:cursorVisible="true"
+            android:gravity="center|left|top"
+            android:hint="@string/feedback_name"
+            android:importantForAutofill="no"
+            android:inputType="textLongMessage"
+            android:padding="10.0dip"
+            android:textColor="@color/white"
+            android:textColorHint="#ffd0d0e8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Space
+        android:id="@id/feedbackSpace2"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackConstraintLayout2">
+    </Space>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/feedbackConstraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackSpace2">
+
+        <EditText
+            android:id="@id/feedbackInputMessage"
+            android:layout_width="fill_parent"
+            android:layout_height="256.0dip"
+            android:background="@drawable/inputbox"
+            android:cursorVisible="true"
+            android:gravity="center|left|top"
+            android:hint="@string/feedback_message"
+            android:importantForAutofill="no"
+            android:inputType="textLongMessage|textMultiLine"
+            android:padding="10.0dip"
+            android:textColor="@color/white"
+            android:textColorHint="#ffd0d0e8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Space
+        android:id="@id/feedbackSpace3"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackConstraintLayout3">
+    </Space>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/feedbackConstraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackSpace3">
+
+        <Button
+            android:id="@id/feedbackSend"
+            android:layout_width="128.0dip"
+            android:layout_height="48.0dip"
+            android:background="@drawable/buttongradient"
+            android:clickable="true"
+            android:contentDescription="@string/feedback_send_dec"
+            android:focusable="true"
+            android:text="@string/feedback_send"
+            android:textAlignment="center"
+            android:textColor="#ff130e41"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </Button>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

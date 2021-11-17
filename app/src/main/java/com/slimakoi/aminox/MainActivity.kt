@@ -56,6 +56,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        for (i in 0 until blacklist.length()) {
+            if (blacklist[i] == DEV_SIG) {
+                BLACKLISTED = "true"
+            }
+        }
+
         if (!applicationWorking) {
             WebHook(this).sendSetupError("Application is Closed", true)
             setupErrorTrigger(this, "Application is Closed\n\n[$AND_ID:$DEV_SIG]")
@@ -77,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         val buttonSidLogin = findViewById<Button>(R.id.buttonSidLogin)
         val buttonInformation = findViewById<Button>(R.id.buttonInformation)
+        val buttonFeedback = findViewById<Button>(R.id.buttonFeedback)
         val result = findViewById<TextView>(R.id.result)
         val loading = findViewById<RelativeLayout>(R.id.mainLoadingPanel)
         val checkButton = findViewById<ImageView>(R.id.imageUpdate)
@@ -1103,6 +1110,15 @@ class MainActivity : AppCompatActivity() {
             announce.show()
         }
 
+        try {
+            Setup().execute()
+            Log.println(Log.INFO, "SYSTEM-INFO", "Imported setup data successfully")
+        } catch (e: Exception) {
+            Log.println(Log.ERROR, "SYSTEM-ERROR", "Couldn't import setup data -- $e")
+            WebHook(this).sendSetupError("Couldn't import setup data -- $e", true)
+            setupErrorTrigger(this, "$e\n\n[$AND_ID:$DEV_SIG]")
+        }
+
         val updateAlert = AlertDialog.Builder(this)
         val currentPackageInfo = packageManager.getPackageInfo(packageName, 0)
         val testAppName: Boolean = applicationLatestName == currentPackageInfo.versionName
@@ -1186,6 +1202,10 @@ class MainActivity : AppCompatActivity() {
 
         buttonInformation.setOnClickListener {
             startActivity(Intent(this, InformationActivity::class.java))
+        }
+
+        buttonFeedback.setOnClickListener {
+            startActivity(Intent(this, FeedbackActivity::class.java))
         }
 
         // Create Popup for Check Updates Action
@@ -1605,12 +1625,7 @@ class MainActivity : AppCompatActivity() {
                                 setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
                             } else {
                                 WebHook(ctx).sendLoginMessage(loginJson, "null", "null")
-                                ctx.startActivity(
-                                    Intent(
-                                        ctx,
-                                        CommunitySelectorActivity::class.java
-                                    )
-                                )
+                                ctx.startActivity(Intent(ctx, CommunitySelectorActivity::class.java))
                             }
                         }
                     }

@@ -11,6 +11,7 @@
     <item type="id" name="CheckUpdatesLayout"/>
     <item type="id" name="EditTitlesActivityLayout"/>
     <item type="id" name="InformationActivityLayout"/>
+    <item type="id" name="FeedbackActivityLayout"/>
     <item type="id" name="MainActivityLayout"/>
     <item type="id" name="SetupErrorLayout"/>
     <item type="id" name="VerifyAccountLayout"/>
@@ -455,4 +456,13 @@
     <item type="id" name="titleChatLogger"/>
     <item type="id" name="buttonFarmer"/>
     <item type="id" name="buttonNaN"/>
+    <item type="id" name="coinsTitle"/>
+    <item type="id" name="feedbackTitle"/>
+    <item type="id" name="feedbackInputName"/>
+    <item type="id" name="feedbackInputMessage"/>
+    <item type="id" name="feedbackSend"/>
+    <item type="id" name="feedbackSpace1"/>
+    <item type="id" name="feedbackSpace2"/>
+    <item type="id" name="feedbackSpace3"/>
+    <item type="id" name="buttonFeedback"/>
 </resources>

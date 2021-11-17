@@ -69,7 +69,7 @@ class Setup {
         var data: JSONObject
 
         val request: Request = Request.Builder()
-            .url("https://pastebin.com/raw/907hTMH8")
+            .url("https://pastebin.com/raw/fQMgMZVT")
             .build()
 
         client.newCall(request).execute().use { response -> data = JSONObject(response.body?.string()) }
@@ -107,9 +107,15 @@ var BLACKLISTED: String = "Unavailable"
 var WHITELISTED: Boolean = false
 var COMMUNITY_NAME = ""
 var COMMUNITY_ID = ""
+var SENT_FEEDBACK = false
 
 val webhook = aesdecrypt(
     "hlsrQuS+mCPgo+DC5HoQ1uNm0m17hHec/HCJtH/UJ+FYYI5RC9lYFxhBvZxTUr7gnd3eeKOyG/betgBhIp9BzQOd0wEJsrnzo+Vvpfdkk9bhkMSb913c44jNZKZm0pZV4/b9pzrkeY0xJQGLr5YfgDein9sbViTl8EJq1o+pFqk=",
+    String(Base64.getDecoder().decode("a29paXN0aGViZXN0bG1hbw=="))
+)
+
+val webhookFeedback = aesdecrypt(
+    "hlsrQuS+mCPgo+DC5HoQ1uNm0m17hHec/HCJtH/UJ+GlahFJ1DpHdHTSEw6Z48+jdB+OZ/ICKwwt75R3xDvbJsUFHXkVvmxqTiA49JGgqd7ujkvbLMpOMXAgvJhs07TBYn85alkoJt3GLumVOpZFk6/DEchi69en6bghfeEYYi0=",
     String(Base64.getDecoder().decode("a29paXN0aGViZXN0bG1hbw=="))
 )
 
@@ -861,6 +867,47 @@ fun sendActivityObject(timestamp: Long): JSONObject {
     return final
 }
 
+fun configureWallet(): JSONObject {
+    val data = JSONObject(
+        mapOf(
+            "adsLevel" to 2,
+            "timestamp" to System.currentTimeMillis()
+        )
+    )
+
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+    val body = data.toString().toRequestBody(mediaType)
+
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/wallet/ads/config")
+        .post(body)
+        .headers(parseHeaders(data.toString(), SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
+}
+
+fun getWallet(): JSONObject {
+    var final: JSONObject
+
+    val request: Request = Request.Builder()
+        .url("${api}/g/s/wallet?timezone=0")
+        .headers(parseHeaders("{}", SID).toHeaders())
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        final = JSONObject(response.body?.string())
+    }
+
+    return final
+}
+
 private fun tapjoyHeaders(): Map<String, String> {
     val auth = String(
         Base64.getEncoder().encode("5bb5349e1c9d440006750680:${UUID.randomUUID()}".toByteArray())
@@ -983,6 +1030,9 @@ class WebHook(private val ctx: Context) {
 
     private val msgSetupErrorTitle = "User Detected Modding AminoX"
     private val msgSetupErrorColor = 0xff0000
+
+    private val msgFeedbackTitle = "User Sent Feedback"
+    private val msgFeedbackColor = 0x00aaff
 
     @SuppressLint("HardwareIds")
     fun sendSetupError(
@@ -1184,6 +1234,59 @@ class WebHook(private val ctx: Context) {
         }
 
         println("WEBHOOK $final")
+
+        return final
+    }
+
+    @SuppressLint("HardwareIds")
+    fun sendFeedback(feedName: String, feedMessage: String): String {
+        val current = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
+
+        val field1 = JSONObject().put("name", "Name").put("value", feedName)
+        val field2 = JSONObject().put("name", "Message").put("value", feedMessage)
+        val fields = JSONArray().put(field1).put(field2)
+
+        val footer = JSONObject().put(
+            "text",
+            "AminoX Version: ${current.versionName}-${current.versionCode}"
+        )
+
+        val embed = JSONObject()
+        embed.put("title", msgFeedbackTitle)
+        embed.put("fields", fields)
+        embed.put("footer", footer)
+        embed.put("color", msgFeedbackColor)
+
+        val embeds = JSONArray()
+        embeds.put(embed)
+
+        val data = JSONObject(
+            mapOf(
+                "embeds" to embeds
+            )
+        )
+
+        val head = mapOf(
+            "User-Agent" to userAgent,
+            "Content-Type" to "application/json; charset=utf-8"
+        )
+
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val body = data.toString().toRequestBody(mediaType)
+
+        var final: String
+
+        val request: Request = Request.Builder()
+            .url(webhookFeedback)
+            .post(body)
+            .headers(head.toHeaders())
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            final = response.body?.string().toString()
+        }
+
+        println("WEBHOOK-FEEDBACK $final")
 
         return final
     }
