@@ -41,15 +41,6 @@ class MainActivity : AppCompatActivity() {
 
         AND_ID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
 
-        try {
-            Setup().execute()
-            Log.println(Log.INFO, "SYSTEM-INFO", "Imported setup data successfully")
-        } catch (e: Exception) {
-            Log.println(Log.ERROR, "SYSTEM-ERROR", "Couldn't import setup data -- $e")
-            WebHook(this).sendSetupError("Couldn't import setup data -- $e", true)
-            setupErrorTrigger(this, "$e\n\n[$AND_ID:$DEV_SIG]")
-        }
-
         for (i in 0 until whitelist.length()) {
             if (whitelist[i] == DEV_SIG) {
                 WHITELISTED = true
@@ -1111,7 +1102,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         try {
-            Setup().execute()
+            Setup().execute(this)
             Log.println(Log.INFO, "SYSTEM-INFO", "Imported setup data successfully")
         } catch (e: Exception) {
             Log.println(Log.ERROR, "SYSTEM-ERROR", "Couldn't import setup data -- $e")

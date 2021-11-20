@@ -4,14 +4,22 @@ apply plugin: "kotlin-android-extensions"
 apply plugin: "com.google.gms.google-services"
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\Slimakoi\\AndroidStudioProjects\\aminox-proguard-key.jks')
+            storePassword 'portimaokoi99'
+            keyAlias 'aminox'
+            keyPassword 'portimaokoi99'
+        }
+    }
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.slimakoi.aminox"
         minSdkVersion 26
-        targetSdkVersion 29
-        versionCode 2608
+        targetSdkVersion 30
+        versionCode 2610
         versionName "2.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -80,7 +88,7 @@ dependencies {
     implementation "org.bouncycastle:bcprov-ext-jdk16:1.46"
 
     implementation "org.json:json:20210307"
-    //implementation "io.karn:khttp-android:0.1.2"
+    implementation "io.karn:khttp-android:0.1.2"
     //implementation "com.github.kittinunf.fuel:fuel:2.3.1"
     //implementation "com.github.kittinunf.fuel:fuel-android:2.3.1"
 

@@ -910,8 +910,8 @@ class ActionSelectorActivity : AppCompatActivity() {
                     }
                 }
 
-                val playQuizJSON = postQuiz(quizId = target, mode = 0, data = final)
-                val playQuizHellJSON = postQuiz(quizId = target, mode = 1, data = final)
+                val playQuizJSON = postQuiz(quizId = target, mode = 0, dat = final)
+                val playQuizHellJSON = postQuiz(quizId = target, mode = 1, dat = final)
                 val statusMessage = playQuizJSON.getString("api:message").toString()
                 val statusMessageHell = playQuizHellJSON.getString("api:message").toString()
                 Toast.makeText(this, "Normal: $statusMessage\nHell: $statusMessageHell", Toast.LENGTH_LONG).show()

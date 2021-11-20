@@ -13,6 +13,8 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.runOnUiThread
 import org.json.JSONObject
 
+val client = OkHttpClient()
+
 class ChatActivity : AppCompatActivity() {
     private class EchoWebSocketListener(cotx: Context, chatScroll: TextView): WebSocketListener() {
         val ctx = cotx
@@ -81,7 +83,7 @@ class ChatActivity : AppCompatActivity() {
             while (true) {
                 ws = client.newWebSocket(request, listener)
                 println("DONE RESTARTING...")
-                Thread.sleep(30 * 1000)
+                Thread.sleep(30000)
                 println("RESTARTING...")
                 ws.close(1000, null)
                 println("RESTARTED!")
