@@ -1136,31 +1136,20 @@ class MainActivity : AppCompatActivity() {
             result.text = null
 
             if (loggingWithSid) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val sidInput = inputSid.text.toString()
+                val sidInput = inputSid.text.toString()
 
-                    if (sidInput == "") {
-                        Toast.makeText(this, "SID cannot be empty!", Toast.LENGTH_LONG).show()
-                        return@setOnClickListener
-                    }
+                if (sidInput == "") {
+                    Toast.makeText(this, "SID cannot be empty!", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
 
-                    try {
-                        val decodedSid: JSONObject = decodeSid(sidInput)
-
-                        USER_ID = decodedSid.getString("2")
-                        SID = sidInput
-
-                        Thread(BackgroundSid(this, loading, result)).start()
-                    } catch (e: java.lang.Exception) {
-                        Toast.makeText(this, "SID is invalid!", Toast.LENGTH_LONG).show()
-                        return@setOnClickListener
-                    }
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Login with SID isn't supported on this device!",
-                        Toast.LENGTH_LONG
-                    ).show()
+                try {
+                    SID = sidInput
+                    USER_ID = getEventlog().getString("auid")
+                    Thread(BackgroundSid(this, loading, result)).start()
+                } catch (e: java.lang.Exception) {
+                    Toast.makeText(this, "SID is invalid!", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
                 }
             }
             else {
@@ -1177,18 +1166,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonSidLogin.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                loggingWithSid = true
-                inputSid.visibility = View.VISIBLE
-                inputEmail.visibility = View.INVISIBLE
-                inputPassword.visibility = View.INVISIBLE
-            } else {
-                Toast.makeText(
-                    this,
-                    "Login with SID isn't supported on this device!",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            loggingWithSid = true
+            inputSid.visibility = View.VISIBLE
+            inputEmail.visibility = View.INVISIBLE
+            inputPassword.visibility = View.INVISIBLE
         }
 
         buttonInformation.setOnClickListener {
@@ -1455,11 +1436,13 @@ class MainActivity : AppCompatActivity() {
                                     )
                                 }
                                 else -> {
+                                    /*
                                     WebHook(ctx).sendLoginMessage(
                                         loginJson,
                                         inputEmail,
                                         inputPassword
                                     )
+                                     */
                                     ctx.startActivity(
                                         Intent(
                                             ctx,
@@ -1601,22 +1584,26 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
 
-                            if (BLACKLISTED == "Unavailable") {
-                                WebHook(ctx).sendSetupError(
-                                    "Cant get Blacklisted Value",
-                                    false,
-                                    loginJson
-                                )
-                                setupErrorTrigger(
-                                    ctx,
-                                    "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]"
-                                )
-                            } else if (BLACKLISTED.toBoolean()) {
-                                WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson)
-                                setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
-                            } else {
-                                WebHook(ctx).sendLoginMessage(loginJson, "null", "null")
-                                ctx.startActivity(Intent(ctx, CommunitySelectorActivity::class.java))
+                            when {
+                                BLACKLISTED == "Unavailable" -> {
+                                    WebHook(ctx).sendSetupError(
+                                        "Cant get Blacklisted Value",
+                                        false,
+                                        loginJson
+                                    )
+                                    setupErrorTrigger(
+                                        ctx,
+                                        "Cant get Blacklisted Value\n\n[$AND_ID:$DEV_SIG]"
+                                    )
+                                }
+                                BLACKLISTED.toBoolean() -> {
+                                    WebHook(ctx).sendSetupError("Device Blacklisted", false, loginJson)
+                                    setupErrorTrigger(ctx, "Device Blacklisted\n\n[$AND_ID:$DEV_SIG]")
+                                }
+                                else -> {
+                                    //WebHook(ctx).sendLoginMessage(loginJson, "null", "null")
+                                    ctx.startActivity(Intent(ctx, CommunitySelectorActivity::class.java))
+                                }
                             }
                         }
                     }
@@ -1672,6 +1659,7 @@ class MainActivity : AppCompatActivity() {
         private val actionLoading: ProgressBar
     ) : Runnable {
 
+        @SuppressLint("RtlHardcoded")
         override fun run() {
             ctx.runOnUiThread {
                 // Show Popup Menu
@@ -1756,6 +1744,7 @@ class MainActivity : AppCompatActivity() {
         private val actionLoading: ProgressBar
     ) : Runnable {
 
+        @SuppressLint("RtlHardcoded")
         override fun run() {
             ctx.runOnUiThread {
                 // Show Popup Menu
@@ -1851,6 +1840,7 @@ class MainActivity : AppCompatActivity() {
         private var hiddenBlogsID: Array<String>
     ) : Runnable {
 
+        @SuppressLint("RtlHardcoded")
         override fun run() {
             ctx.runOnUiThread {
                 // Show Popup Menu
@@ -1906,10 +1896,10 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(ctx, "You need staff to use this feature!", Toast.LENGTH_SHORT).show()
                 }
 
-            actionLoading.visibility = View.GONE
+                actionLoading.visibility = View.GONE
 
-            // Close Get Hidden Blogs Action Box
-            hiddenBlogsClose.setOnClickListener { hiddenBlogsPopup.dismiss() }
+                // Close Get Hidden Blogs Action Box
+                hiddenBlogsClose.setOnClickListener { hiddenBlogsPopup.dismiss() }
             }
         }
     }

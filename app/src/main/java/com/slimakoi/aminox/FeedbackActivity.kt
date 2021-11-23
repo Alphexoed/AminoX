@@ -1,7 +1,5 @@
 package com.slimakoi.aminox
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -23,7 +21,7 @@ class FeedbackActivity : AppCompatActivity() {
         val feedbackAlert = AlertDialog.Builder(this)
 
         feedbackAlert.setTitle("Read before sending feedback!")
-        feedbackAlert.setMessage("Here you can message Slimakoi about AminoX, you can send new feature ideas for the app or report bugs, please be specific on your message!\n\nAlso please don't spam this, thanks!")
+        feedbackAlert.setMessage("Here you can message Slimakoi about AminoX, you can send new feature ideas for the app or report bugs, please be specific on your message!\n\nInclude a way to contact you back via discord or other platform that isn't Amino!\n\nAlso please don't spam this, thanks!")
         feedbackAlert.setNegativeButton("Understood") { dialog, _ -> dialog.dismiss() }
         feedbackAlert.setCancelable(false)
         feedbackAlert.show()

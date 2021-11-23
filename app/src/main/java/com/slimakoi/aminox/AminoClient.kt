@@ -58,7 +58,7 @@ fun start(): OkHttpClient {
 
 class Setup {
     fun execute(ctx: Context) {
-        val data = JSONObject(get("https://pastebin.com/raw/fQMgMZVT").text)
+        val data = JSONObject(get("https://raw.githubusercontent.com/Slimakoi/AminoX-Information/master/data.json").text)
 
         applicationWorking = data.getJSONObject("application").getBoolean("working")
         applicationLatestName = data.getJSONObject("application").getString("versionName")
@@ -249,7 +249,10 @@ fun parseHeaders(data: String, sid: String = "null"): Map<String, String> {
 }
 
 fun decodeSid(sid: String): JSONObject {
+    println(Base64.getDecoder().decode(sid))
+
     var decoded = String(Base64.getDecoder().decode(sid))
+
     decoded = decoded.drop(decoded.indexOf("{"))
     return JSONObject(decoded.dropLast(decoded.length - decoded.indexOf("}") - 1))
 }
@@ -545,6 +548,10 @@ fun configureWallet(): JSONObject {
 
 fun getWallet(): JSONObject {
     return JSONObject(get("${api}/g/s/wallet?timezone=0", headers = parseHeaders("{}", SID)).text)
+}
+
+fun getEventlog(): JSONObject {
+    return JSONObject(get("${api}/g/s/eventlog/profile?language=en", headers = parseHeaders("{}", SID)).text)
 }
 
 private fun tapjoyHeaders(): Map<String, String> {
