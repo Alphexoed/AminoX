@@ -59,10 +59,11 @@ fun start(): OkHttpClient {
 class Setup {
     fun execute(ctx: Context) {
         val data = JSONObject(get("https://raw.githubusercontent.com/Slimakoi/AminoX-Information/master/data.json").text)
+        val updateData = JSONObject(get("https://raw.githubusercontent.com/Slimakoi/AminoX-Information/master/update.json").text)
 
         applicationWorking = data.getJSONObject("application").getBoolean("working")
-        applicationLatestName = data.getJSONObject("application").getString("versionName")
-        applicationLatestCode = data.getJSONObject("application").getString("versionCode")
+        applicationLatestName = updateData.getString("latestVersion")
+        applicationLatestCode = updateData.getInt("latestVersionCode").toString()
         applicationUrl = data.getJSONObject("application").getString("download")
         announcementHasData = data.getJSONObject("announcement").getBoolean("hasData")
         announcementCancelable = data.getJSONObject("announcement").getBoolean("cancelable")

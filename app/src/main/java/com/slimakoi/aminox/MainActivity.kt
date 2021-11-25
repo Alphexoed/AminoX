@@ -25,6 +25,9 @@ import org.json.JSONObject
 import java.io.InputStream
 import java.net.URL
 import java.util.*
+import com.github.javiersantos.appupdater.AppUpdater
+import com.github.javiersantos.appupdater.enums.UpdateFrom
+import org.jetbrains.anko.internals.AnkoInternals.createAnkoContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -1110,6 +1113,15 @@ class MainActivity : AppCompatActivity() {
             setupErrorTrigger(this, "$e\n\n[$AND_ID:$DEV_SIG]")
         }
 
+        // Auto Update Feature
+        val appUpdater = AppUpdater(this)
+        appUpdater.setUpdateFrom(UpdateFrom.JSON)
+        appUpdater.setUpdateJSON("https://raw.githubusercontent.com/Slimakoi/AminoX-Information/master/update.json")
+        appUpdater.setIcon(R.drawable.upgrade)
+        appUpdater.setCancelable(false)
+        appUpdater.start()
+
+        /*
         val updateAlert = AlertDialog.Builder(this)
         val currentPackageInfo = packageManager.getPackageInfo(packageName, 0)
         val testAppName: Boolean = applicationLatestName == currentPackageInfo.versionName
@@ -1130,6 +1142,7 @@ class MainActivity : AppCompatActivity() {
             updateAlert.setNegativeButton("Ignore") { dialog, _ -> dialog.dismiss() }
             updateAlert.show()
         }
+         */
 
         buttonLogin.setOnClickListener{
             loading.visibility = View.VISIBLE
