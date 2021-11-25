@@ -19,7 +19,7 @@ android {
         applicationId "com.slimakoi.aminox"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 2611
+        versionCode 2612
         versionName "2.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

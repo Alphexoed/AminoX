@@ -60,10 +60,15 @@ class EditTitlesActivity : AppCompatActivity() {
             for (x in 0 until 100) {
                 val titleObject = json.getJSONObject("extensions").getJSONArray("customTitles")[x]
                 val titleName = JSONObject(titleObject.toString()).getString("title")
-                var titleColor = JSONObject(titleObject.toString()).getString("color")
+
+                var titleColor = "#010101"
+
+                try {
+                    titleColor = JSONObject(titleObject.toString()).getString("color")
+                } catch (e: JSONException) { e.printStackTrace() }
 
                 if (titleColor == "#") {
-                    titleColor = "#000000"
+                    titleColor = "#010101"
                 }
 
                 val rb = Button(this)
@@ -73,7 +78,7 @@ class EditTitlesActivity : AppCompatActivity() {
                 try {
                     rb.setBackgroundColor(Color.parseColor(titleColor.toString()))
                 } catch (e: Exception) {
-                    rb.setBackgroundColor(Color.parseColor("#000000"))
+                    rb.setBackgroundColor(Color.parseColor("#010101"))
                     Log.println(Log.ERROR, "SYSTEM-ERROR", "Error while loading colored title -- $e")
                 }
 
