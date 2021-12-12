@@ -1,21 +1,30 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.71'
+    ext.kotlin_version = "1.3.71"
     repositories {
         google()
         jcenter()
-        flatDir { dirs '../../../lib' }
-        maven { url 'https://maven.preemptive.com/' }
+        flatDir { dirs "../../../lib" }
+        maven { url "https://maven.preemptive.com/" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
-        classpath 'com.preemptive.dasho:dasho-android:1.4.+'
+        classpath "com.android.tools.build:gradle:7.0.3"
+        classpath "com.preemptive.dasho:dasho-android:1.4.+"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.5'
-        classpath 'com.android.tools.build:gradle:7.0.3'
-        classpath 'com.android.tools.build:gradle:0.0'
+        classpath "com.google.gms:google-services:4.3.5"
+        classpath "com.android.tools.build:gradle:7.0.3"
+
+        // StringFog
+        // https://github.com/MegatronKing/StringFog
+        classpath "com.github.megatronking.stringfog:gradle-plugin:2.2.1"
+        classpath "com.github.megatronking.stringfog:xor:1.1.0"
+
+        // Enigma
+        // https://github.com/christopherney/Enigma
+        classpath "gradle.plugin.chrisney:enigma:1.0.0.8"
     }
 }
 
@@ -23,6 +32,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 

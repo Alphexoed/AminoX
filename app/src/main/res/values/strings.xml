@@ -213,4 +213,6 @@
     <string name="feedback_send">Send</string>
     <string name="feedback_send_dec">Send Feedback Button</string>
     <string name="feedback">Feedback</string>
+    <string name="frase">Frase</string>
+    <string name="cracked_keys">Cracked NDC-MSG-SIG</string>
 </resources>

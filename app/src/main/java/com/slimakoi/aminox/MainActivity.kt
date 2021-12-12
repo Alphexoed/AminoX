@@ -8,7 +8,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.Settings
@@ -18,16 +17,12 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import okhttp3.OkHttpClient
 import org.jetbrains.anko.textColor
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.InputStream
 import java.net.URL
 import java.util.*
-import com.github.javiersantos.appupdater.AppUpdater
-import com.github.javiersantos.appupdater.enums.UpdateFrom
-import org.jetbrains.anko.internals.AnkoInternals.createAnkoContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -1113,6 +1108,7 @@ class MainActivity : AppCompatActivity() {
             setupErrorTrigger(this, "$e\n\n[$AND_ID:$DEV_SIG]")
         }
 
+        /*
         // Auto Update Feature
         val appUpdater = AppUpdater(this)
         appUpdater.setUpdateFrom(UpdateFrom.JSON)
@@ -1120,8 +1116,8 @@ class MainActivity : AppCompatActivity() {
         appUpdater.setIcon(R.drawable.upgrade)
         appUpdater.setCancelable(false)
         appUpdater.start()
+         */
 
-        /*
         val updateAlert = AlertDialog.Builder(this)
         val currentPackageInfo = packageManager.getPackageInfo(packageName, 0)
         val testAppName: Boolean = applicationLatestName == currentPackageInfo.versionName
@@ -1142,7 +1138,6 @@ class MainActivity : AppCompatActivity() {
             updateAlert.setNegativeButton("Ignore") { dialog, _ -> dialog.dismiss() }
             updateAlert.show()
         }
-         */
 
         buttonLogin.setOnClickListener{
             loading.visibility = View.VISIBLE

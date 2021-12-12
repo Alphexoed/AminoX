@@ -3,6 +3,12 @@ apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
 apply plugin: "com.google.gms.google-services"
 
+// StringFog
+apply plugin: "stringfog"
+
+// Enigma
+apply plugin: "com.chrisney.enigma"
+
 android {
     signingConfigs {
         release {
@@ -19,8 +25,8 @@ android {
         applicationId "com.slimakoi.aminox"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 2703
-        versionName "2.7"
+        versionCode 2801
+        versionName "2.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         proguardFiles
@@ -73,6 +79,19 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
+// StringFog
+stringfog {
+    key "slimakoiisthebestdeveloper"
+    enable true
+    implementation "com.github.megatronking.stringfog.xor.StringFogImpl"
+    fogPackages = ["com.github.megatronking.stringfog"]
+}
+
+// Enigma
+enigma.enabled = true
+enigma.injectFakeKeys = true
+enigma.hash = "slimakoisureisthebestdeveloperxd"
+
 repositories {
     //jcenter()
     mavenCentral()
@@ -94,8 +113,11 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp:4.9.2"
 
-    implementation "com.google.guava:guava:31.0.1-android"
-    implementation "com.github.javiersantos:AppUpdater:2.7"
+    //implementation "com.google.guava:guava:31.0.1-android"
+    //implementation "com.github.javiersantos:AppUpdater:2.7"
+
+    // StringFog
+    implementation "com.github.megatronking.stringfog:xor:1.1.0"
 
     //implementation platform("com.google.firebase:firebase-bom:26.1.0")
     //implementation "com.google.firebase:firebase-analytics-ktx"

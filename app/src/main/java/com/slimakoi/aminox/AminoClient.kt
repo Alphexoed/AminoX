@@ -222,7 +222,7 @@ fun aesdecrypt(strToDecrypt: String?, key: String): String {
 
 fun ndcMsgSig(data: String): String {
     val key = aesdecrypt(
-        "7IN9lib2Dvz0PXyG7yWT2RGEgcpbRUsyCPe6fmlmwoXw7vlAzKGHF2dPqYagoeS/", String(
+        "t1OMTGAOPu3f+KhvNK1ioTY5i36H/z+kf0Ujo6XWtZckC9CZcr4vnR+uVYW/Rxmm", String(
             Base64.getDecoder().decode(
                 "a29paXN0aGViZXN0bG1hbw=="
             )
@@ -231,7 +231,7 @@ fun ndcMsgSig(data: String): String {
     val hmac = Mac.getInstance("HmacSHA1")
     val secretKey = SecretKeySpec(key, "HmacSHA1")
     hmac.init(secretKey)
-    val final = "22".decodeHex() + hmac.doFinal(data.toByteArray())
+    val final = "32".decodeHex() + hmac.doFinal(data.toByteArray())
     return Base64.getEncoder().encodeToString(final)
 }
 
